@@ -68,3 +68,25 @@ jobs:
           name: playwright-report
           path: 04-automation/ui/playwright-report/
           retention-days: 14
+
+  api-tests:
+    name: Playwright API tests (Restful-Booker)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 04-automation/api
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: 04-automation/api/package-lock.json
+      - run: npm ci
+      - run: npx playwright test  # request API only — no browser install needed
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-api-report
+          path: 04-automation/api/playwright-report/
+          retention-days: 14

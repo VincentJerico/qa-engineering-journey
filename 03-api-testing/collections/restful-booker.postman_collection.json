@@ -1,0 +1,241 @@
+{
+  "info": {
+    "name": "Restful-Booker API (TP-003)",
+    "description": "API tests for Restful-Booker, mirroring the scenarios in 03-api-testing/test-scenarios. Uses environment variables baseUrl, username, password, token, bookingId. Run the whole collection top-to-bottom (auth → create → read → update → patch → delete).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health & Auth",
+      "item": [
+        {
+          "name": "SC-API-001 Health check (GET /ping)",
+          "request": { "method": "GET", "url": "{{baseUrl}}/ping" },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "exec": [
+                "pm.test('status is 201', () => pm.response.to.have.status(201));",
+                "pm.test('body says Created', () => pm.expect(pm.response.text()).to.include('Created'));"
+              ] }
+            }
+          ]
+        },
+        {
+          "name": "SC-API-002 Create token (POST /auth)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth",
+            "body": { "mode": "raw", "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}" }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "exec": [
+                "pm.test('status is 200', () => pm.response.to.have.status(200));",
+                "const json = pm.response.json();",
+                "pm.test('token present', () => pm.expect(json.token).to.be.a('string').and.not.empty);",
+                "pm.environment.set('token', json.token);"
+              ] }
+            }
+          ]
+        },
+        {
+          "name": "SC-API-003 Auth bad credentials",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth",
+            "body": { "mode": "raw", "raw": "{\n  \"username\": \"bad\",\n  \"password\": \"bad\"\n}" }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "exec": [
+                "pm.test('status is 200', () => pm.response.to.have.status(200));",
+                "const json = pm.response.json();",
+                "pm.test('reason is Bad credentials', () => pm.expect(json.reason).to.eql('Bad credentials'));",
+                "pm.test('no token', () => pm.expect(json.token).to.be.undefined);"
+              ] }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Booking CRUD",
+      "item": [
+        {
+          "name": "SC-API-010 List bookings (GET /booking)",
+          "request": { "method": "GET", "url": "{{baseUrl}}/booking" },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "exec": [
+                "pm.test('status is 200', () => pm.response.to.have.status(200));",
+                "const arr = pm.response.json();",
+                "pm.test('array of bookingid', () => { pm.expect(arr).to.be.an('array'); pm.expect(arr[0]).to.have.property('bookingid'); });"
+              ] }
+            }
+          ]
+        },
+        {
+          "name": "SC-API-011 Create booking (POST /booking)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/booking",
+            "body": { "mode": "raw", "raw": "{\n  \"firstname\": \"Vincent\",\n  \"lastname\": \"Jerico\",\n  \"totalprice\": 150,\n  \"depositpaid\": true,\n  \"bookingdates\": { \"checkin\": \"2026-10-01\", \"checkout\": \"2026-10-05\" },\n  \"additionalneeds\": \"Breakfast\"\n}" }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "exec": [
+                "pm.test('status is 200', () => pm.response.to.have.status(200));",
+                "const json = pm.response.json();",
+                "pm.test('has bookingid', () => pm.expect(json.bookingid).to.be.a('number'));",
+                "pm.test('echoes firstname', () => pm.expect(json.booking.firstname).to.eql('Vincent'));",
+                "pm.environment.set('bookingId', json.bookingid);"
+              ] }
+            }
+          ]
+        },
+        {
+          "name": "SC-API-012 Get booking (GET /booking/:id)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": "{{baseUrl}}/booking/{{bookingId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "exec": [
+                "pm.test('status is 200', () => pm.response.to.have.status(200));",
+                "const b = pm.response.json();",
+                "pm.test('firstname matches', () => pm.expect(b.firstname).to.eql('Vincent'));",
+                "pm.test('has bookingdates', () => pm.expect(b.bookingdates).to.have.property('checkin'));"
+              ] }
+            }
+          ]
+        },
+        {
+          "name": "SC-API-013 Update booking (PUT /booking/:id)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Cookie", "value": "token={{token}}" }
+            ],
+            "url": "{{baseUrl}}/booking/{{bookingId}}",
+            "body": { "mode": "raw", "raw": "{\n  \"firstname\": \"Vince\",\n  \"lastname\": \"Updated\",\n  \"totalprice\": 200,\n  \"depositpaid\": false,\n  \"bookingdates\": { \"checkin\": \"2026-11-01\", \"checkout\": \"2026-11-03\" },\n  \"additionalneeds\": \"Lunch\"\n}" }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "exec": [
+                "pm.test('status is 200', () => pm.response.to.have.status(200));",
+                "const b = pm.response.json();",
+                "pm.test('firstname updated', () => pm.expect(b.firstname).to.eql('Vince'));",
+                "pm.test('totalprice updated', () => pm.expect(b.totalprice).to.eql(200));"
+              ] }
+            }
+          ]
+        },
+        {
+          "name": "SC-API-014 Patch booking (PATCH /booking/:id)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Cookie", "value": "token={{token}}" }
+            ],
+            "url": "{{baseUrl}}/booking/{{bookingId}}",
+            "body": { "mode": "raw", "raw": "{\n  \"firstname\": \"Patched\"\n}" }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "exec": [
+                "pm.test('status is 200', () => pm.response.to.have.status(200));",
+                "const b = pm.response.json();",
+                "pm.test('firstname patched', () => pm.expect(b.firstname).to.eql('Patched'));",
+                "pm.test('lastname unchanged', () => pm.expect(b.lastname).to.eql('Updated'));"
+              ] }
+            }
+          ]
+        },
+        {
+          "name": "SC-API-015 Delete booking (DELETE /booking/:id)",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Cookie", "value": "token={{token}}" }],
+            "url": "{{baseUrl}}/booking/{{bookingId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "exec": [
+                "pm.test('status is 201', () => pm.response.to.have.status(201));"
+              ] }
+            }
+          ]
+        },
+        {
+          "name": "SC-API-016 Verify deletion (GET /booking/:id)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": "{{baseUrl}}/booking/{{bookingId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "exec": [
+                "pm.test('status is 404', () => pm.response.to.have.status(404));"
+              ] }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Negative & Access Control",
+      "item": [
+        {
+          "name": "SC-API-020 Get non-existent booking",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": "{{baseUrl}}/booking/99999999"
+          },
+          "event": [
+            { "listen": "test", "script": { "exec": [
+              "pm.test('status is 404', () => pm.response.to.have.status(404));"
+            ] } }
+          ]
+        },
+        {
+          "name": "SC-API-021 Update without auth (expect 403)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/booking/1",
+            "body": { "mode": "raw", "raw": "{\n  \"firstname\": \"NoAuth\",\n  \"lastname\": \"X\",\n  \"totalprice\": 1,\n  \"depositpaid\": false,\n  \"bookingdates\": { \"checkin\": \"2026-01-01\", \"checkout\": \"2026-01-02\" }\n}" }
+          },
+          "event": [
+            { "listen": "test", "script": { "exec": [
+              "pm.test('status is 403', () => pm.response.to.have.status(403));"
+            ] } }
+          ]
+        }
+      ]
+    }
+  ]
+}

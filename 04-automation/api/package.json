@@ -1,0 +1,17 @@
+{
+  "name": "restful-booker-api-automation",
+  "version": "1.0.0",
+  "description": "Playwright API tests for Restful-Booker, derived from TP-003 scenarios",
+  "type": "module",
+  "scripts": {
+    "test": "playwright test",
+    "report": "playwright show-report"
+  },
+  "keywords": ["qa", "api", "playwright", "restful-booker"],
+  "author": "Vincent Jerico",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.48.0",
+    "@types/node": "^22.0.0"
+  }
+}
