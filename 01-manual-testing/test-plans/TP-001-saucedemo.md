@@ -8,7 +8,27 @@
 | **Version / Env** | Production demo, latest |
 | **Author** | Vincent Jerico |
 | **Date** | 2026-09-17 |
-| **Status** | Draft |
+| **Status** | ✅ Executed (2026-09-17) |
+
+---
+
+## Execution Summary (2026-09-17)
+All four in-scope suites were written and executed against the live site.
+
+| Suite | Cases | Pass | Defects / Observations | Report |
+|-------|------:|-----:|------------------------|--------|
+| Login | 11 | 11 | — | [TER-001](../test-cases/RESULTS-2026-09-17-login-catalog.md) |
+| Catalog | 12 | 11 | 1 defect (BUG-001) | [TER-001](../test-cases/RESULTS-2026-09-17-login-catalog.md) |
+| Cart | 11 | 10 | 1 defect (BUG-002) | [TER-002](../test-cases/RESULTS-2026-09-17-cart-checkout.md) |
+| Checkout | 13 | 11 | 2 observations | [TER-002](../test-cases/RESULTS-2026-09-17-cart-checkout.md) |
+| **Total** | **47** | **43** | **2 defects, 2 observations** | — |
+
+**Defects raised:**
+- [BUG-001](../bug-reports/BUG-001-problem-user-identical-images.md) — `problem_user` shows identical product images (Medium).
+- [BUG-002](../bug-reports/BUG-002-empty-cart-checkout.md) — Empty cart can be checked out to a $0 order (Medium).
+
+**Exit criteria:** met — all planned cases executed; no open Critical/High defects in core flows.
+**Regression:** [CHK-001](../checklists/CHK-001-saucedemo-regression.md) — quick smoke checklist for future runs.
 
 ---
 
