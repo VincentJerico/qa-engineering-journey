@@ -1,8 +1,13 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Playwright configuration for the SauceDemo UI suite.
- * See the manual test plan: ../../01-manual-testing/test-plans/TP-001-saucedemo.md
+ * Playwright configuration for the UI automation suites.
+ * Organized by application via Playwright "projects", each with its own baseURL:
+ *   - saucedemo    → tests/*.spec.ts        (TP-001)  https://www.saucedemo.com
+ *   - the-internet → tests/the-internet/**  (TP-002)  https://the-internet.herokuapp.com
+ *
+ * Run one app:  npx playwright test --project=the-internet
+ * Plans: ../../01-manual-testing/test-plans/
  */
 export default defineConfig({
   testDir: './tests',
@@ -13,17 +18,21 @@ export default defineConfig({
   reporter: [['list'], ['html', { open: 'never' }]],
 
   use: {
-    baseURL: 'https://www.saucedemo.com',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
 
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: 'saucedemo',
+      testIgnore: '**/the-internet/**',
+      use: { ...devices['Desktop Chrome'], baseURL: 'https://www.saucedemo.com' },
     },
-    // Add more browsers when needed:
-    // { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
+    {
+      name: 'the-internet',
+      testDir: './tests/the-internet',
+      use: { ...devices['Desktop Chrome'], baseURL: 'https://the-internet.herokuapp.com' },
+    },
+    // Add more browsers per project when needed, e.g. devices['Desktop Firefox'].
   ],
 });

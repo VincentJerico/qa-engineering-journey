@@ -47,7 +47,7 @@ jobs:
   #     - run: npm test
 
   ui-tests:
-    name: Playwright UI tests (SauceDemo)
+    name: Playwright UI tests (SauceDemo + The Internet)
     runs-on: ubuntu-latest
     defaults:
       run:
