@@ -1,5 +1,10 @@
 # QA Engineering Journey
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+![Status](https://img.shields.io/badge/status-in%20progress-brightgreen)
+![Focus](https://img.shields.io/badge/focus-QA%20Engineering-blue)
+![Last Commit](https://img.shields.io/github/last-commit/VincentJerico/qa-engineering-journey)
+
 A structured learning and portfolio repository documenting my path in Quality Assurance engineering — from manual testing fundamentals through automation, performance, security, AI testing, and CI/CD.
 
 ## Repository Structure
