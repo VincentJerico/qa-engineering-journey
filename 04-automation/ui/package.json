@@ -1,0 +1,20 @@
+{
+  "name": "saucedemo-ui-automation",
+  "version": "1.0.0",
+  "description": "Playwright UI automation for SauceDemo, derived from TP-001 manual test cases",
+  "type": "module",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "report": "playwright show-report",
+    "install:browsers": "playwright install chromium"
+  },
+  "keywords": ["qa", "playwright", "saucedemo", "automation"],
+  "author": "Vincent Jerico",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.48.0",
+    "@types/node": "^22.0.0"
+  }
+}
