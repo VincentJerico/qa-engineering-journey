@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch: # allow manual runs from the Actions tab
+
+jobs:
+  sanity-check:
+    name: Repository sanity check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show repository structure
+        run: |
+          echo "Repository tree (top 2 levels):"
+          find . -maxdepth 2 -not -path './.git/*' | sort
+
+      - name: Verify required files exist
+        run: |
+          set -e
+          for f in README.md LICENSE .gitignore; do
+            if [ -f "$f" ]; then
+              echo "OK: $f"
+            else
+              echo "MISSING: $f" && exit 1
+            fi
+          done
+
+  # ---------------------------------------------------------------------------
+  # Placeholder jobs for when tests are added. Uncomment and adapt as needed.
+  # ---------------------------------------------------------------------------
+
+  # api-tests:
+  #   name: API tests (Playwright / Postman / etc.)
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 20
+  #     - run: npm ci
+  #     - run: npm test
+
+  # ui-tests:
+  #   name: UI automation tests
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 20
+  #     - run: npm ci
+  #     - run: npx playwright install --with-deps
+  #     - run: npx playwright test

@@ -1,5 +1,6 @@
 # QA Engineering Journey
 
+[![CI](https://github.com/VincentJerico/qa-engineering-journey/actions/workflows/ci.yml/badge.svg)](https://github.com/VincentJerico/qa-engineering-journey/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 ![Status](https://img.shields.io/badge/status-in%20progress-brightgreen)
 ![Focus](https://img.shields.io/badge/focus-QA%20Engineering-blue)
