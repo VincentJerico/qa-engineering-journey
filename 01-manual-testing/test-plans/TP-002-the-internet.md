@@ -8,7 +8,27 @@
 | **Version / Env** | Public demo, latest |
 | **Author** | Vincent Jerico |
 | **Date** | 2026-09-17 |
-| **Status** | Draft |
+| **Status** | ✅ Executed (2026-09-17) |
+
+---
+
+## Execution Summary (2026-09-17)
+All seven modules written and executed against the live site.
+
+| Module | Cases | Pass | Findings |
+|--------|------:|-----:|----------|
+| Form Authentication | 8 | 8 | — |
+| Checkboxes | 6 | 6 | — |
+| Dropdown | 6 | 6 | — |
+| Add/Remove Elements | 5 | 5 | — |
+| JavaScript Alerts | 6 | 6 | — |
+| Dynamic Loading | 5 | 5 | — |
+| Inputs | 8 | 8 | 2 observations |
+| **Total** | **44** | **44** | **0 defects, 2 observations** |
+
+**Report:** [TER-003](../test-cases/the-internet/RESULTS-2026-09-17-the-internet.md)
+**Exit criteria:** met — all planned cases executed; no defects.
+**Regression:** [CHK-002](../checklists/the-internet/CHK-002-the-internet-regression.md)
 
 ---
 
