@@ -31,7 +31,7 @@ the **Checkout: Your Information** page (`/checkout-step-one.html`) unless a cas
 | # | Step | Test Data | Expected Result |
 |---|------|-----------|-----------------|
 | 1 | Leave First Name blank; fill Last Name and Zip | Last=`Jerico`, Zip=`1000` | — |
-| 2 | Click **Continue** | — | Error: "Error: First Name is required." Stays on step one |
+| 2 | Click **Continue** | — | Error: "Error: First Name is required" — stays on step one |
 
 ---
 
@@ -40,7 +40,7 @@ the **Checkout: Your Information** page (`/checkout-step-one.html`) unless a cas
 | # | Step | Test Data | Expected Result |
 |---|------|-----------|-----------------|
 | 1 | Fill First Name and Zip; leave Last Name blank | First=`Vincent`, Zip=`1000` | — |
-| 2 | Click **Continue** | — | Error: "Error: Last Name is required." Stays on step one |
+| 2 | Click **Continue** | — | Error: "Error: Last Name is required" — stays on step one |
 
 ---
 
@@ -49,7 +49,7 @@ the **Checkout: Your Information** page (`/checkout-step-one.html`) unless a cas
 | # | Step | Test Data | Expected Result |
 |---|------|-----------|-----------------|
 | 1 | Fill First and Last Name; leave Zip blank | First=`Vincent`, Last=`Jerico` | — |
-| 2 | Click **Continue** | — | Error: "Error: Postal Code is required." Stays on step one |
+| 2 | Click **Continue** | — | Error: "Error: Postal Code is required" — stays on step one |
 
 ---
 
@@ -128,6 +128,8 @@ the **Checkout: Your Information** page (`/checkout-step-one.html`) unless a cas
 | 1 | Enter numbers in name fields and letters in Zip | First=`123`, Last=`456`, Zip=`abcde` | Document behavior — SauceDemo does not enforce data-type validation; note this as an observation for a real application |
 
 ---
+
+> **Executed 2026-09-17 — 11 passed, 2 documented observations.** See [TER-002](RESULTS-2026-09-17-cart-checkout.md). Field errors use the exact live wording (prefixed "Error: ", no trailing period).
 
 ## Notes
 - Exact error-message text, tax rate, and totals should be confirmed against the live app at
