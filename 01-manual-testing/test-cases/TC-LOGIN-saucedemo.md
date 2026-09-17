@@ -11,6 +11,8 @@
 
 **Preconditions (all cases):** Browser open at the login page; no active session (logged out).
 
+> **Executed 2026-09-17 — all cases passed.** See [TER-001](RESULTS-2026-09-17-login-catalog.md). Error messages below use the exact live wording (each is prefixed with "Epic sadface: ").
+
 ---
 
 ### TC-LOGIN-001 — Valid login (standard_user)
@@ -29,7 +31,7 @@
 |---|------|-----------|-----------------|
 | 1 | Enter username | `locked_out_user` | Value accepted |
 | 2 | Enter password | `secret_sauce` | Value masked |
-| 3 | Click **Login** | — | Login is rejected; error shown: "Sorry, this user has been locked out." User stays on login page |
+| 3 | Click **Login** | — | Login rejected; error: "Epic sadface: Sorry, this user has been locked out." User stays on login page |
 
 ---
 
@@ -39,7 +41,7 @@
 |---|------|-----------|-----------------|
 | 1 | Enter username | `standard_user` | Value accepted |
 | 2 | Enter password | `wrong_password` | Value masked |
-| 3 | Click **Login** | — | Error: "Username and password do not match any user in this service." No redirect |
+| 3 | Click **Login** | — | Error: "Epic sadface: Username and password do not match any user in this service". No redirect |
 
 ---
 
@@ -49,7 +51,7 @@
 |---|------|-----------|-----------------|
 | 1 | Enter username | `unknown_user` | Value accepted |
 | 2 | Enter password | `secret_sauce` | Value masked |
-| 3 | Click **Login** | — | Error: "Username and password do not match any user in this service." No redirect |
+| 3 | Click **Login** | — | Error: "Epic sadface: Username and password do not match any user in this service". No redirect |
 
 ---
 
@@ -59,7 +61,7 @@
 |---|------|-----------|-----------------|
 | 1 | Leave username blank | (empty) | — |
 | 2 | Enter password | `secret_sauce` | Value masked |
-| 3 | Click **Login** | — | Error: "Username is required." No redirect |
+| 3 | Click **Login** | — | Error: "Epic sadface: Username is required". No redirect |
 
 ---
 
@@ -69,7 +71,7 @@
 |---|------|-----------|-----------------|
 | 1 | Enter username | `standard_user` | Value accepted |
 | 2 | Leave password blank | (empty) | — |
-| 3 | Click **Login** | — | Error: "Password is required." No redirect |
+| 3 | Click **Login** | — | Error: "Epic sadface: Password is required". No redirect |
 
 ---
 
@@ -78,7 +80,7 @@
 | # | Step | Test Data | Expected Result |
 |---|------|-----------|-----------------|
 | 1 | Leave both fields blank | (empty) | — |
-| 2 | Click **Login** | — | Error: "Username is required." (username validated first) |
+| 2 | Click **Login** | — | Error: "Epic sadface: Username is required" (username validated first) |
 
 ---
 
@@ -103,7 +105,7 @@
 **Priority:** Medium · **Technique:** Negative / access control
 | # | Step | Test Data | Expected Result |
 |---|------|-----------|-----------------|
-| 1 | While logged out, navigate directly to `/inventory.html` | URL | Access denied; redirected to login with an error such as "You can only access '/inventory.html' when you are logged in." |
+| 1 | While logged out, navigate directly to `/inventory.html` | URL | Access denied; redirected to login: "Epic sadface: You can only access '/inventory.html' when you are logged in." |
 
 ---
 
