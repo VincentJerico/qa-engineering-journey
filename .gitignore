@@ -1,0 +1,60 @@
+# ---- macOS ----
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
+
+# ---- Editors / IDEs ----
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ---- Node / JS (automation, Playwright, etc.) ----
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json.bak
+.pnpm-debug.log*
+
+# ---- Python (automation, utilities) ----
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+
+# ---- Test / automation output ----
+allure-results/
+allure-report/
+playwright-report/
+test-results/
+reports/
+screenshots/
+videos/
+*.log
+
+# ---- Performance testing (k6, JMeter, etc.) ----
+*.jtl
+results/
+
+# ---- Secrets / environment ----
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+
+# ---- Build / temp ----
+dist/
+build/
+tmp/
+*.tmp
