@@ -46,7 +46,7 @@ Every area follows the same disciplined loop: **plan → write cases → execute
 | Automation | ✅ Done | 91 UI + 17 API Playwright tests, in CI |
 | CI/CD | ✅ Active | GitHub Actions: sanity + UI + API jobs |
 | Test design | ✅ Done | Worked examples of EP, BVA, decision tables, state transition |
-| SQL testing | ⬜ Planned | Sample DB + data-validation queries and scenarios |
+| SQL testing | ✅ Done | SQLite sample DB, 8 data-validation checks, analytics queries, execution report |
 | Performance testing | ⬜ Planned | k6 load/stress against Restful-Booker |
 | Security testing | ⬜ Planned | OWASP-style checks and findings |
 | AI testing | ⬜ Planned | Evaluating AI/LLM-based systems |
@@ -69,7 +69,7 @@ cd 04-automation/api && npm install && npm test
 2. ✅ **Test Design Techniques** — systematic case derivation
 3. ✅ **API Testing** — request/response validation, status codes, auth
 4. ✅ **Automation** — UI & API test automation with Playwright
-5. ⬜ **SQL Testing** — data integrity and backend validation
+5. ✅ **SQL Testing** — data integrity and backend validation
 6. ⬜ **Performance Testing** — load and stress testing
 7. ⬜ **Security Testing** — common vulnerabilities and defensive checks
 8. ⬜ **AI Testing** — evaluating AI/LLM systems

@@ -53,6 +53,11 @@ results/
 *.key
 secrets/
 
+# ---- SQLite build artifacts (regenerate from schema.sql) ----
+*.db
+*.sqlite
+*.sqlite3
+
 # ---- Build / temp ----
 dist/
 build/
