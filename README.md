@@ -10,7 +10,7 @@
 
 A structured learning and portfolio repository documenting my path in Quality Assurance engineering — from manual testing fundamentals through automation, performance, security, AI testing, and CI/CD.
 
-Every area follows the same disciplined loop: **plan → write cases → execute live → report results (and log any defects) → automate → run in CI.**
+All 9 roadmap areas complete. Every area follows the same disciplined loop: **plan → write cases → execute live → report results (and log any defects) → automate → run in CI.**
 
 ## Highlights so far
 - **2 manual test cycles executed** end-to-end against live apps — [SauceDemo](01-manual-testing/test-plans/TP-001-saucedemo.md) (47 cases, 2 bugs found) and [The Internet](01-manual-testing/test-plans/TP-002-the-internet.md) (44 cases).
@@ -49,7 +49,7 @@ Every area follows the same disciplined loop: **plan → write cases → execute
 | SQL testing | ✅ Done | SQLite sample DB, 8 data-validation checks, analytics queries, execution report |
 | Performance testing | ✅ Done | k6 smoke/load/stress vs Restful-Booker, execution report |
 | Security testing | ✅ Done | OWASP-oriented checklist, 15 checks, live execution report |
-| AI testing | ⬜ Planned | Evaluating AI/LLM-based systems |
+| AI testing | ✅ Done | Runnable LLM eval harness (6 evals: classification, extraction, safety, schema) |
 
 ## Tech stack
 Playwright + TypeScript · Postman · GitHub Actions · Markdown documentation
@@ -72,7 +72,7 @@ cd 04-automation/api && npm install && npm test
 5. ✅ **SQL Testing** — data integrity and backend validation
 6. ✅ **Performance Testing** — load and stress testing (k6)
 7. ✅ **Security Testing** — OWASP-oriented defensive checks
-8. ⬜ **AI Testing** — evaluating AI/LLM systems
+8. ✅ **AI Testing** — LLM eval harness (schema/keyword/safety checks over a golden set)
 9. ✅ **CI/CD** — pipelines and test integration
 
 ## Notes
