@@ -48,7 +48,7 @@ Every area follows the same disciplined loop: **plan → write cases → execute
 | Test design | ✅ Done | Worked examples of EP, BVA, decision tables, state transition |
 | SQL testing | ✅ Done | SQLite sample DB, 8 data-validation checks, analytics queries, execution report |
 | Performance testing | ✅ Done | k6 smoke/load/stress vs Restful-Booker, execution report |
-| Security testing | ⬜ Planned | OWASP-style checks and findings |
+| Security testing | ✅ Done | OWASP-oriented checklist, 15 checks, live execution report |
 | AI testing | ⬜ Planned | Evaluating AI/LLM-based systems |
 
 ## Tech stack
@@ -71,7 +71,7 @@ cd 04-automation/api && npm install && npm test
 4. ✅ **Automation** — UI & API test automation with Playwright
 5. ✅ **SQL Testing** — data integrity and backend validation
 6. ✅ **Performance Testing** — load and stress testing (k6)
-7. ⬜ **Security Testing** — common vulnerabilities and defensive checks
+7. ✅ **Security Testing** — OWASP-oriented defensive checks
 8. ⬜ **AI Testing** — evaluating AI/LLM systems
 9. ✅ **CI/CD** — pipelines and test integration
 
