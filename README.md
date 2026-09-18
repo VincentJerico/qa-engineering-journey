@@ -45,7 +45,7 @@ Every area follows the same disciplined loop: **plan → write cases → execute
 | API testing | ✅ Done | Plan, 17 scenarios, API reference, Postman collection, execution report |
 | Automation | ✅ Done | 91 UI + 17 API Playwright tests, in CI |
 | CI/CD | ✅ Active | GitHub Actions: sanity + UI + API jobs |
-| Test design | ⬜ Planned | Worked examples of EP, BVA, decision tables, state transition |
+| Test design | ✅ Done | Worked examples of EP, BVA, decision tables, state transition |
 | SQL testing | ⬜ Planned | Sample DB + data-validation queries and scenarios |
 | Performance testing | ⬜ Planned | k6 load/stress against Restful-Booker |
 | Security testing | ⬜ Planned | OWASP-style checks and findings |
@@ -66,7 +66,7 @@ cd 04-automation/api && npm install && npm test
 ## Learning Roadmap
 
 1. ✅ **Manual Testing** — fundamentals of test design and defect reporting
-2. ⬜ **Test Design Techniques** — systematic case derivation
+2. ✅ **Test Design Techniques** — systematic case derivation
 3. ✅ **API Testing** — request/response validation, status codes, auth
 4. ✅ **Automation** — UI & API test automation with Playwright
 5. ⬜ **SQL Testing** — data integrity and backend validation
