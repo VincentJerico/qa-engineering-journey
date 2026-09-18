@@ -1,7 +1,9 @@
 # Project Plan: `taskflow-under-test`
 
-> A future **standalone repo** (sibling to this journey repo). This is the plan/spec — no code yet.
-> Status: **Planned.** Start at Milestone 1 when ready.
+> ✅ **BUILT (2026-09-18).** Repo: https://github.com/VincentJerico/taskflow-under-test
+> All 7 milestones complete — Express + SQLite app with **59 automated tests** (27 unit + 28 API +
+> 4 E2E), a seed-and-catch-bugs writeup, and CI (unit+API and E2E jobs) green.
+> This document is the original plan/spec that guided the build.
 
 ## Pitch
 Most QA portfolios only test *someone else's* app. This repo shows both sides: **build** a small app,
