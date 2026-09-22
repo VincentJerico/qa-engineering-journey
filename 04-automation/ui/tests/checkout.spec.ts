@@ -122,14 +122,18 @@ test.describe('SauceDemo — Checkout', () => {
   // TC-CHK-012 & TC-CHK-013 document permissive input handling (observations, not defects for
   // this demo). They assert SauceDemo's ACTUAL behavior: whitespace-only and wrong-typed values
   // are accepted and the flow proceeds to the overview.
-  test('TC-CHK-012: whitespace-only inputs are accepted (documented behavior)', async ({ page }) => {
+  test('TC-CHK-012: whitespace-only inputs are accepted (documented behavior)', async ({
+    page,
+  }) => {
     await startCheckout(page, [PRODUCTS.backpack.id]);
     await checkout.fillInformation(' ', ' ', ' ');
     await checkout.continue();
     await expect(page).toHaveURL(/checkout-step-two\.html/);
   });
 
-  test('TC-CHK-013: no data-type validation on name/zip (documented behavior)', async ({ page }) => {
+  test('TC-CHK-013: no data-type validation on name/zip (documented behavior)', async ({
+    page,
+  }) => {
     await startCheckout(page, [PRODUCTS.backpack.id]);
     await checkout.fillInformation('123', '456', 'abcde');
     await checkout.continue();

@@ -29,7 +29,9 @@ test.describe('Restful-Booker — Negative & Access Control', () => {
     expect(res.status()).toBe(403);
   });
 
-  test('SC-API-023: DELETE without auth returns 403 and record still exists', async ({ request }) => {
+  test('SC-API-023: DELETE without auth returns 403 and record still exists', async ({
+    request,
+  }) => {
     const { id } = await createBooking(request);
     const res = await request.delete(`/booking/${id}`);
     expect(res.status()).toBe(403);
@@ -46,7 +48,9 @@ test.describe('Restful-Booker — Negative & Access Control', () => {
     expect(res.status()).toBe(403);
   });
 
-  test('SC-API-025: POST with incomplete body is rejected (documents actual status)', async ({ request }) => {
+  test('SC-API-025: POST with incomplete body is rejected (documents actual status)', async ({
+    request,
+  }) => {
     const res = await request.post('/booking', { data: { firstname: 'OnlyName' } });
     // Restful-Booker returns 500 for malformed create; a real API should return 400.
     expect(res.status()).toBeGreaterThanOrEqual(400);

@@ -20,7 +20,9 @@ test.describe('Restful-Booker — Health & Auth', () => {
     expect(json.token.length).toBeGreaterThan(0);
   });
 
-  test('SC-API-003: POST /auth with bad credentials returns Bad credentials (no token)', async ({ request }) => {
+  test('SC-API-003: POST /auth with bad credentials returns Bad credentials (no token)', async ({
+    request,
+  }) => {
     const res = await request.post('/auth', { data: { username: 'bad', password: 'bad' } });
     // Documented observation: the API returns 200 (not 401) for bad credentials.
     expect(res.status()).toBe(200);
@@ -29,7 +31,9 @@ test.describe('Restful-Booker — Health & Auth', () => {
     expect(json.token).toBeUndefined();
   });
 
-  test('SC-API-004: POST /auth with missing fields does not return a token', async ({ request }) => {
+  test('SC-API-004: POST /auth with missing fields does not return a token', async ({
+    request,
+  }) => {
     const res = await request.post('/auth', { data: {} });
     expect(res.status()).toBe(200);
     const json = await res.json();

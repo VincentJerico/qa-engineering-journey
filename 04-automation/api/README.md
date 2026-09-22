@@ -5,10 +5,12 @@ scenarios in [TP-003](../../03-api-testing/documentation/TP-003-restful-booker.m
 carries its scenario ID (e.g. `SC-API-011`) for traceability.
 
 ## Stack
+
 - [Playwright Test](https://playwright.dev) `request` fixture (HTTP only — **no browser needed**, so
   no `playwright install` step).
 
 ## Setup & run
+
 ```bash
 cd 04-automation/api
 npm install
@@ -17,6 +19,7 @@ npm run report     # open the last HTML report
 ```
 
 ## Structure
+
 ```
 api/
 ├── playwright.config.ts     # baseURL + default JSON headers
@@ -28,6 +31,7 @@ api/
 ```
 
 ## Notes
+
 - `booking-crud.spec.ts` runs **serially** on one freshly-created booking (create → read → put →
   patch → delete → verify), so it doesn't depend on shared data.
 - Negative tests assert **side effects** (record unchanged / still present), not just status codes.
