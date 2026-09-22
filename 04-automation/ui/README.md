@@ -3,17 +3,19 @@
 Automated UI tests for two practice apps, converted from the manual test cases. Each test title
 carries its manual case ID (e.g. `TC-LOGIN-001`, `TC-TI-LOGIN-001`) for traceability.
 
-| App | Manual plan | Playwright project | baseURL |
-|-----|-------------|--------------------|---------|
-| [SauceDemo](https://www.saucedemo.com) | [TP-001](../../01-manual-testing/test-plans/TP-001-saucedemo.md) | `saucedemo` | https://www.saucedemo.com |
-| [The Internet](https://the-internet.herokuapp.com) | [TP-002](../../01-manual-testing/test-plans/TP-002-the-internet.md) | `the-internet` | https://the-internet.herokuapp.com |
+| App                                                | Manual plan                                                         | Playwright project | baseURL                            |
+| -------------------------------------------------- | ------------------------------------------------------------------- | ------------------ | ---------------------------------- |
+| [SauceDemo](https://www.saucedemo.com)             | [TP-001](../../01-manual-testing/test-plans/TP-001-saucedemo.md)    | `saucedemo`        | https://www.saucedemo.com          |
+| [The Internet](https://the-internet.herokuapp.com) | [TP-002](../../01-manual-testing/test-plans/TP-002-the-internet.md) | `the-internet`     | https://the-internet.herokuapp.com |
 
 ## Stack
+
 - [Playwright Test](https://playwright.dev) + TypeScript
 - Page Object Model (`pages/`) with per-app subfolders and shared test data
 - Two Playwright **projects**, each with its own `baseURL` (see `playwright.config.ts`)
 
 ## Setup
+
 ```bash
 cd 04-automation/ui
 npm install
@@ -21,6 +23,7 @@ npm run install:browsers   # downloads Chromium
 ```
 
 ## Run
+
 ```bash
 npm test                              # headless, both apps
 npx playwright test --project=saucedemo
@@ -31,6 +34,7 @@ npm run report                        # open the last HTML report
 ```
 
 ## Structure
+
 ```
 ui/
 ├── playwright.config.ts          # two projects, each with its own baseURL
@@ -56,12 +60,15 @@ ui/
 ```
 
 ## Known-defect tests
-Two tests document confirmed bugs and are marked `test.fail()` — they assert the *correct* behavior,
+
+Two tests document confirmed bugs and are marked `test.fail()` — they assert the _correct_ behavior,
 so Playwright expects them to fail until the bug is fixed (a green `test.fail()` means "still broken";
 if it ever passes, Playwright flags it, telling you the bug was fixed):
+
 - `TC-CAT-012` → [BUG-001](../../01-manual-testing/bug-reports/BUG-001-problem-user-identical-images.md) (problem_user identical images)
 - `TC-CART-009` → [BUG-002](../../01-manual-testing/bug-reports/BUG-002-empty-cart-checkout.md) (empty-cart checkout)
 
 ## Notes
+
 - Tests run against the live public site, so results depend on it being reachable and unchanged.
 - `node_modules/`, `playwright-report/`, and `test-results/` are git-ignored (see repo root `.gitignore`).

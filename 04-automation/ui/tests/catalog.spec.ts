@@ -109,9 +109,7 @@ test.describe('SauceDemo — Catalog (known defect)', () => {
     await inventory.expectLoaded();
     const images = page.locator('.inventory_item_img img');
     await expect(images).toHaveCount(6); // guard: images actually loaded
-    const srcs = await images.evaluateAll(
-      (imgs) => imgs.map((i) => (i as HTMLImageElement).src),
-    );
+    const srcs = await images.evaluateAll((imgs) => imgs.map((i) => (i as HTMLImageElement).src));
     const distinct = new Set(srcs);
     expect(distinct.size).toBe(srcs.length); // expected to fail: 1 !== 6
   });

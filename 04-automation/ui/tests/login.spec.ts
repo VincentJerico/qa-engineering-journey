@@ -27,12 +27,16 @@ test.describe('SauceDemo — Login', () => {
 
   test('TC-LOGIN-003: invalid password', async () => {
     await login.login(USERS.standard, 'wrong_password');
-    await login.expectError('Epic sadface: Username and password do not match any user in this service');
+    await login.expectError(
+      'Epic sadface: Username and password do not match any user in this service',
+    );
   });
 
   test('TC-LOGIN-004: non-existent username (no user enumeration)', async () => {
     await login.login('unknown_user', PASSWORD);
-    await login.expectError('Epic sadface: Username and password do not match any user in this service');
+    await login.expectError(
+      'Epic sadface: Username and password do not match any user in this service',
+    );
   });
 
   test('TC-LOGIN-005: empty username', async () => {
@@ -64,7 +68,9 @@ test.describe('SauceDemo — Login', () => {
   test('TC-LOGIN-010: direct inventory access is blocked when logged out', async ({ page }) => {
     await page.goto('/inventory.html');
     await expect(page).toHaveURL(/(saucedemo\.com\/?|index\.html)$/);
-    await login.expectError("Epic sadface: You can only access '/inventory.html' when you are logged in.");
+    await login.expectError(
+      "Epic sadface: You can only access '/inventory.html' when you are logged in.",
+    );
   });
 
   test('TC-LOGIN-011: logout ends the session (back button does not restore)', async ({ page }) => {
@@ -74,6 +80,8 @@ test.describe('SauceDemo — Login', () => {
     await inventory.logout();
     await expect(page).toHaveURL(/(saucedemo\.com\/?|index\.html)$/);
     await page.goBack();
-    await login.expectError("Epic sadface: You can only access '/inventory.html' when you are logged in.");
+    await login.expectError(
+      "Epic sadface: You can only access '/inventory.html' when you are logged in.",
+    );
   });
 });

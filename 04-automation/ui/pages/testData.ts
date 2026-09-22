@@ -16,7 +16,11 @@ export const PRODUCTS = {
   boltTShirt: { id: 'sauce-labs-bolt-t-shirt', name: 'Sauce Labs Bolt T-Shirt', price: 15.99 },
   fleeceJacket: { id: 'sauce-labs-fleece-jacket', name: 'Sauce Labs Fleece Jacket', price: 49.99 },
   onesie: { id: 'sauce-labs-onesie', name: 'Sauce Labs Onesie', price: 7.99 },
-  redTShirt: { id: 'test.allthethings()-t-shirt-(red)', name: 'Test.allTheThings() T-Shirt (Red)', price: 15.99 },
+  redTShirt: {
+    id: 'test.allthethings()-t-shirt-(red)',
+    name: 'Test.allTheThings() T-Shirt (Red)',
+    price: 15.99,
+  },
 } as const;
 
 export const CUSTOMER = {
