@@ -6,6 +6,8 @@ service needed — the database is rebuilt from `schema.sql`.
 ## Contents
 ```
 05-sql-testing/
+├── check.sh                         # CI gate: rebuild + diff against expected/
+├── expected/                        # golden query output (the defects the checks must catch)
 ├── schema.sql                       # schema + seed data (with deliberate data-quality issues)
 ├── queries/
 │   ├── data-validation.sql          # V1..V8 checks (empty result = PASS)
@@ -19,9 +21,14 @@ service needed — the database is rebuilt from `schema.sql`.
 ```bash
 cd 05-sql-testing
 sqlite3 shop.db < schema.sql              # build the database
-sqlite3 shop.db < queries/data-validation.sql
-sqlite3 shop.db < queries/analytics.sql
+sqlite3 -header -column shop.db < queries/data-validation.sql
+sqlite3 -header -column shop.db < queries/analytics.sql
 ```
+
+`./check.sh` rebuilds the database in a temp dir, runs both query files, and diffs the output
+against `expected/*.csv`. CI runs it on every push. After an intentional change to the seed or
+a query, run `./check.sh --update` and review the diff to `expected/`.
+
 `shop.db` is a build artifact (git-ignored) — regenerate it any time from `schema.sql`.
 
 ## What it demonstrates

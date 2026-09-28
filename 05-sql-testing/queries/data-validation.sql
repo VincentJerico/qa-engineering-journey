@@ -1,10 +1,7 @@
 -- Data-validation queries for shop.db
 -- Each query returns rows ONLY when there is a problem — an empty result = PASS.
--- Run all:  sqlite3 shop.db < queries/data-validation.sql
+-- Run all:  sqlite3 -header -column shop.db < queries/data-validation.sql
 -- Scenarios: ../test-scenarios/SC-SQL-data-validation.md
-
-.headers on
-.mode column
 
 -- V1: Duplicate customer emails (unique-ness) -----------------------------
 SELECT '--- V1 duplicate emails ---' AS check_name;
