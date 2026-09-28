@@ -13,7 +13,7 @@
 | Metric | Count |
 |--------|------:|
 | Total cases | 44 |
-| Passed | 44 |
+| Passed | 42 |
 | Failed | 0 |
 | Defects found | 0 |
 | Observations (behavior documented) | 2 (TC-TI-IN-007, TC-TI-IN-008) |
@@ -83,7 +83,7 @@ like SauceDemo's), so no bugs were raised — coverage and technique practice we
 | TC-TI-DL-004 | Ex.2 not in DOM before Start | ✅ Pass | element absent |
 | TC-TI-DL-005 | Loading indicator | ✅ Pass | visible during load |
 
-### Inputs (`/inputs`) — 8/8
+### Inputs (`/inputs`) — 6/8 (2 observations)
 | Case | Description | Result | Notes |
 |------|-------------|--------|-------|
 | TC-TI-IN-001 | Positive integer | ✅ Pass | `42` |

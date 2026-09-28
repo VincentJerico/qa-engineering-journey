@@ -41,7 +41,7 @@ All threshold gates passed, including the stress test's looser gates (`http_req_
 |--------|-----------|-----|
 | `http_req_failed` | < 5% (load), < 20% (stress) | stress *expects* some degradation; we're finding the ceiling |
 | `http_req_duration p95` | < 1.5 s (load), < 4 s (stress) | user-perceptible responsiveness under normal vs. stressed load |
-| `checks` | > 95% | functional correctness must hold under load |
+| `checks` | > 99% (smoke), > 95% (load), none (stress) | functional correctness must hold under load |
 
 ## How to reproduce
 ```bash

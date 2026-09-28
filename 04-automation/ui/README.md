@@ -53,7 +53,7 @@ ui/
     ├── catalog.spec.ts          #           TC-CAT-001..012
     ├── cart.spec.ts             #           TC-CART-001..011
     ├── checkout.spec.ts         #           TC-CHK-001..013
-    └── the-internet/            # The Internet: TC-TI-* (44 specs)
+    └── the-internet/            # The Internet: TC-TI-* (44 tests)
         ├── login.spec.ts  checkboxes.spec.ts  dropdown.spec.ts
         ├── add-remove.spec.ts  js-alerts.spec.ts
         ├── dynamic-loading.spec.ts  inputs.spec.ts

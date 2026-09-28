@@ -88,7 +88,7 @@ Defects are logged in `01-manual-testing/bug-reports/` using the standard bug-re
 - Test cases in `01-manual-testing/test-cases/`
 - Bug reports in `01-manual-testing/bug-reports/`
 - A checklist in `01-manual-testing/checklists/` for regression passes
-- Exploratory testing notes/charters in `01-manual-testing/exploratory-testing/`
+- Exploratory testing notes/charters in `01-manual-testing/exploratory-testing/` (not produced in this cycle)
 
 ## 7. Entry Criteria
 - Application URL is reachable.

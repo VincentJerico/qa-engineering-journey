@@ -15,15 +15,15 @@ All 9 roadmap areas complete. Every area follows the same disciplined loop: **pl
 ## Highlights so far
 - **2 manual test cycles executed** end-to-end against live apps — [SauceDemo](01-manual-testing/test-plans/TP-001-saucedemo.md) (47 cases, 2 bugs found) and [The Internet](01-manual-testing/test-plans/TP-002-the-internet.md) (44 cases).
 - **API testing** of [Restful-Booker](03-api-testing/documentation/TP-003-restful-booker.md) — 17 scenarios, a [Postman collection](03-api-testing/collections/), and 5 documented API design observations.
-- **108 automated tests** — 91 [Playwright UI](04-automation/ui/) specs (2 apps) + 17 [Playwright API](04-automation/api/) specs — all traceable to their manual case IDs and **green in CI**.
-- **CI pipeline** ([ci.yml](.github/workflows/ci.yml)) runs the sanity check, UI suite, and API suite on every push.
+- **108 automated tests** — 91 [Playwright UI](04-automation/ui/) tests (2 apps) + 17 [Playwright API](04-automation/api/) tests — all traceable to their manual case IDs and **green in CI**.
+- **CI pipeline** ([ci.yml](.github/workflows/ci.yml)) gates every PR and every push to `main` on the UI and API suites, the AI evals, the SQL checks, and k6 script compilation. See [09-ci-cd](09-ci-cd/).
 - **2 defects found & documented**: [BUG-001](01-manual-testing/bug-reports/BUG-001-problem-user-identical-images.md) (identical product images) and [BUG-002](01-manual-testing/bug-reports/BUG-002-empty-cart-checkout.md) (empty-cart checkout completes a $0 order).
 
 ## Repository Structure
 
 | Folder | Focus |
 |--------|-------|
-| [`01-manual-testing/`](01-manual-testing/) | Test plans, test cases, bug reports, checklists, and exploratory testing charters |
+| [`01-manual-testing/`](01-manual-testing/) | Test plans, test cases, bug reports, and checklists |
 | [`02-test-design/`](02-test-design/) | Test design techniques: equivalence partitioning, boundary value analysis, decision tables, state transition |
 | [`03-api-testing/`](03-api-testing/) | API collections, test scenarios, and documentation |
 | [`04-automation/`](04-automation/) | UI automation, API automation, and shared utilities |
@@ -44,7 +44,7 @@ All 9 roadmap areas complete. Every area follows the same disciplined loop: **pl
 | Manual testing | ✅ Done | 2 plans, 91 cases, 2 execution reports, 2 bug reports, 2 checklists |
 | API testing | ✅ Done | Plan, 17 scenarios, API reference, Postman collection, execution report |
 | Automation | ✅ Done | 91 UI + 17 API Playwright tests, in CI |
-| CI/CD | ✅ Active | GitHub Actions: sanity + UI + API jobs |
+| CI/CD | ✅ Active | GitHub Actions: sanity, UI, API, AI evals, SQL checks, k6 compile |
 | Test design | ✅ Done | Worked examples of EP, BVA, decision tables, state transition |
 | SQL testing | ✅ Done | SQLite sample DB, 8 data-validation checks, analytics queries, execution report |
 | Performance testing | ✅ Done | k6 smoke/load/stress vs Restful-Booker, execution report |
@@ -52,7 +52,7 @@ All 9 roadmap areas complete. Every area follows the same disciplined loop: **pl
 | AI testing | ✅ Done | Runnable LLM eval harness (6 evals: classification, extraction, safety, schema) |
 
 ## Tech stack
-Playwright + TypeScript · Postman · GitHub Actions · Markdown documentation
+Playwright + TypeScript · Postman · k6 · SQLite · Node (eval harness) · GitHub Actions · Markdown documentation
 
 ## Running the automated tests
 ```bash
@@ -62,6 +62,10 @@ cd 04-automation/ui && npm install && npm run install:browsers && npm test
 # API tests (Restful-Booker)
 cd 04-automation/api && npm install && npm test
 ```
+
+The SQL checks, k6 scripts and AI evals each have a run block in their area README:
+[05-sql-testing](05-sql-testing/), [06-performance-testing](06-performance-testing/),
+[08-ai-testing](08-ai-testing/).
 
 ## Learning Roadmap
 
