@@ -27,6 +27,9 @@ test.describe('Restful-Booker — Negative & Access Control', () => {
     const { id } = await createBooking(request);
     const res = await request.patch(`/booking/${id}`, { data: { firstname: 'NoAuth' } });
     expect(res.status()).toBe(403);
+    const check = await request.get(`/booking/${id}`);
+    expect(check.status()).toBe(200);
+    expect((await check.json()).firstname).toBe('Vincent');
   });
 
   test('SC-API-023: DELETE without auth returns 403 and record still exists', async ({
@@ -43,16 +46,29 @@ test.describe('Restful-Booker — Negative & Access Control', () => {
     const { id } = await createBooking(request);
     const res = await request.put(`/booking/${id}`, {
       headers: { Cookie: 'token=invalid' },
-      data: sampleBooking(),
+      data: { ...sampleBooking(), firstname: 'BadToken' },
     });
     expect(res.status()).toBe(403);
+    const check = await request.get(`/booking/${id}`);
+    expect(check.status()).toBe(200);
+    expect((await check.json()).firstname).toBe('Vincent');
   });
 
-  test('SC-API-025: POST with incomplete body is rejected (documents actual status)', async ({
-    request,
-  }) => {
-    const res = await request.post('/booking', { data: { firstname: 'OnlyName' } });
-    // Restful-Booker returns 500 for malformed create; a real API should return 400.
-    expect(res.status()).toBeGreaterThanOrEqual(400);
-  });
+  test(
+    'SC-API-025: POST with incomplete body is rejected (documents actual status)',
+    {
+      annotation: {
+        type: 'observed',
+        description:
+          'Restful-Booker returns 500 for malformed create; a real API should return 400.',
+      },
+    },
+    async ({ request }) => {
+      const firstname = `OnlyName-${Date.now()}`;
+      const res = await request.post('/booking', { data: { firstname } });
+      expect(res.status()).toBe(500);
+      const check = await request.get('/booking', { params: { firstname } });
+      expect(await check.json()).toEqual([]);
+    },
+  );
 });
