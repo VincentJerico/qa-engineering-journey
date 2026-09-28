@@ -43,21 +43,6 @@ export class InventoryPage {
     await this.sortSelect.selectOption(value);
   }
 
-  async names(): Promise<string[]> {
-    return this.itemNames.allTextContents();
-  }
-
-  /** Prices as numbers, in current display order. */
-  async prices(): Promise<number[]> {
-    const raw = await this.itemPrices.allTextContents();
-    return raw.map((p) => parseFloat(p.replace('$', '')));
-  }
-
-  async badgeCount(): Promise<number> {
-    if ((await this.cartBadge.count()) === 0) return 0;
-    return parseInt(await this.cartBadge.innerText(), 10);
-  }
-
   async openCart() {
     await this.cartLink.click();
   }
