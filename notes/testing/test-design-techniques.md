@@ -41,4 +41,4 @@ Model the system as states and the events that move between them; test valid and
 ## Related
 - Applied in [TP-001](../../01-manual-testing/test-plans/TP-001-saucedemo.md) and
   [TP-002](../../01-manual-testing/test-plans/TP-002-the-internet.md).
-- Worked examples will live in `../../02-test-design/`.
+- Worked examples: [02-test-design](../../02-test-design/).

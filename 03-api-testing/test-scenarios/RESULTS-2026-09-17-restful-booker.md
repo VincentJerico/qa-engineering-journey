@@ -68,4 +68,4 @@ should be 401). Both would be logged as defects against a real service.
 - Verified with curl first (recon), then encoded as 17 automated Playwright API tests — all green (7.8s).
 - CRUD runs as a serial lifecycle on a freshly-created booking; negative tests create their own
   isolated records and assert side-effects, not just status codes.
-- The Postman collection in `../collections/` mirrors these scenarios for interactive/Newman runs.
+- The Postman collection in `../collections/` covers 12 of these 17 scenarios for interactive/Newman runs. SC-API-004 and SC-API-022 to 025 are automated only.
