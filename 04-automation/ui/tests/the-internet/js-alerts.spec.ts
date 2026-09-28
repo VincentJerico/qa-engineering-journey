@@ -17,36 +17,36 @@ test.describe('The Internet — JavaScript Alerts', () => {
   test('TC-TI-JS-001: alert accept', async ({ page }) => {
     page.once('dialog', (d) => d.accept());
     await js.alertButton.click();
-    expect(await js.resultText()).toBe('You successfully clicked an alert');
+    await expect(js.result).toHaveText('You successfully clicked an alert');
   });
 
   test('TC-TI-JS-002: confirm OK', async ({ page }) => {
     page.once('dialog', (d) => d.accept());
     await js.confirmButton.click();
-    expect(await js.resultText()).toBe('You clicked: Ok');
+    await expect(js.result).toHaveText('You clicked: Ok');
   });
 
   test('TC-TI-JS-003: confirm Cancel', async ({ page }) => {
     page.once('dialog', (d) => d.dismiss());
     await js.confirmButton.click();
-    expect(await js.resultText()).toBe('You clicked: Cancel');
+    await expect(js.result).toHaveText('You clicked: Cancel');
   });
 
   test('TC-TI-JS-004: prompt with text entered', async ({ page }) => {
     page.once('dialog', (d) => d.accept('Hello QA'));
     await js.promptButton.click();
-    expect(await js.resultText()).toBe('You entered: Hello QA');
+    await expect(js.result).toHaveText('You entered: Hello QA');
   });
 
   test('TC-TI-JS-005: prompt cancelled', async ({ page }) => {
     page.once('dialog', (d) => d.dismiss());
     await js.promptButton.click();
-    expect(await js.resultText()).toBe('You entered: null');
+    await expect(js.result).toHaveText('You entered: null');
   });
 
   test('TC-TI-JS-006: prompt accepted with empty input', async ({ page }) => {
     page.once('dialog', (d) => d.accept(''));
     await js.promptButton.click();
-    expect(await js.resultText()).toBe('You entered:');
+    await expect(js.result).toHaveText('You entered:');
   });
 });

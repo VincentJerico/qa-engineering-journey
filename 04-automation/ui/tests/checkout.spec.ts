@@ -63,13 +63,14 @@ test.describe('SauceDemo — Checkout', () => {
     await startCheckout(page, [PRODUCTS.backpack.id]);
     await checkout.cancel();
     await cart.expectLoaded();
-    expect(await cart.itemCount()).toBe(1);
+    await expect(cart.items).toHaveCount(1);
   });
 
   test('TC-CHK-006: overview shows correct line items and item total', async ({ page }) => {
     await startCheckout(page, [PRODUCTS.backpack.id, PRODUCTS.bikeLight.id]);
     await checkout.fillInformation(CUSTOMER.firstName, CUSTOMER.lastName, CUSTOMER.postalCode);
     await checkout.continue();
+    await expect(checkout.itemNames).toHaveText([PRODUCTS.backpack.name, PRODUCTS.bikeLight.name]);
     const expectedItemTotal = PRODUCTS.backpack.price + PRODUCTS.bikeLight.price;
     expect(await checkout.itemTotalValue()).toBeCloseTo(expectedItemTotal, 2);
   });
