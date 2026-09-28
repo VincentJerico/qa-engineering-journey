@@ -28,12 +28,6 @@ export class LoginPage {
     await this.submit.click();
   }
 
-  /** Flash text without the trailing "×" close glyph. */
-  async flashText(): Promise<string> {
-    const raw = (await this.flash.innerText()).trim();
-    return raw.replace(/\s*×\s*$/, '').trim();
-  }
-
   async expectFlash(message: string) {
     await expect(this.flash).toContainText(message);
   }
