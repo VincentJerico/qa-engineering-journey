@@ -15,9 +15,13 @@ Prefer `await expect(locator).toHaveCount(3)` over `expect(await locator.count()
 - Organize by app when a repo covers several: `pages/`, `pages/the-internet/`.
 - Multiple apps in one project → use Playwright **projects** with per-app `baseURL` and `testDir`.
 
-## Documenting known bugs with `test.fail()`
-- Assert the *correct* behavior and mark `test.fail()`. While the bug exists the test "passes"
-  (fails as expected); when it's fixed Playwright flags an unexpected pass → your signal to close it.
+## Documenting known bugs: pin the bug, don't `test.fail()` it
+- I first marked known-bug tests `test.fail()`. An audit showed the trap: `test.fail()` absorbs
+  *any* failed expect, so a broken selector in the setup also reads as the expected failure, which is
+  green.
+- Now each known-bug test asserts the *current* buggy behavior and carries an `issue` annotation.
+  Green means "still broken". It goes red when the bug is fixed, which is the signal to close it,
+  and on any unrelated failure.
 - Used for [BUG-001] (images) and [BUG-002] (empty-cart checkout) in the SauceDemo suite.
 
 ## Native dialogs (alert / confirm / prompt)
