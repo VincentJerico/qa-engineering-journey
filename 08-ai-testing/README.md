@@ -12,6 +12,7 @@ threshold. See [ai-testing-guide.md](ai-testing-guide.md) for the concepts.
 │   ├── model.mjs                    # pluggable model (mock by default; wire a real API with MODEL=real)
 │   ├── dataset.mjs                  # golden set: prompts + tolerant assertions
 │   ├── assertions.mjs               # isValidJSON, matchesSchema, fieldEquals, contains, isRefusal, excludes
+│   ├── controls.mjs                 # negative controls: one known-bad output per assertion helper
 │   └── run-evals.mjs                # runner — prints report, exits non-zero on failure (CI gate)
 └── RESULTS-2026-09-18-ai-evals.md   # execution report (TER-008)
 ```
@@ -32,6 +33,10 @@ classification, extraction/structured output, factual Q&A, **safety/refusal**, a
 Assertions are deliberately **tolerant** (schema + keyword + refusal detection) so they survive normal
 LLM phrasing variation while still catching real regressions — wrong classification, malformed JSON,
 or a model that complies with a harmful request all fail the run.
+
+The runner also guards against vacuous passes. Before the dataset, it runs each assertion helper
+against a known-bad output from `controls.mjs` and fails if any helper accepts it, or if a helper has
+no control. It also fails on an empty dataset and on any case with no assertions.
 
 ## Note on the mock model
 The default model is a deterministic mock so the harness is runnable and CI-friendly without secrets.
