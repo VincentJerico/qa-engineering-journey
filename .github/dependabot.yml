@@ -20,6 +20,9 @@ updates:
         dependency-type: development
         update-types: [minor, patch]
     ignore:
+      # typescript-eslint supports TypeScript <6.1 — lift once it supports TypeScript 7.
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
       # @types/node tracks the Node runtime (22 in CI), not the newest Node release.
       - dependency-name: "@types/node"
         update-types: ["version-update:semver-major"]
