@@ -23,8 +23,8 @@ All seven modules written and executed against the live site.
 | Add/Remove Elements | 5 | 5 | — |
 | JavaScript Alerts | 6 | 6 | — |
 | Dynamic Loading | 5 | 5 | — |
-| Inputs | 8 | 8 | 2 observations |
-| **Total** | **44** | **44** | **0 defects, 2 observations** |
+| Inputs | 8 | 6 | 2 observations |
+| **Total** | **44** | **42** | **0 defects, 2 observations** |
 
 **Report:** [TER-003](../test-cases/the-internet/RESULTS-2026-09-17-the-internet.md)
 **Exit criteria:** met — all planned cases executed; no defects.
@@ -36,7 +36,7 @@ All seven modules written and executed against the live site.
 [The Internet](https://the-internet.herokuapp.com) is a collection of ~44 independent example pages,
 each demonstrating a specific web behavior or automation challenge. Unlike SauceDemo (one end-to-end
 flow), it is a set of focused, isolated features — ideal for practicing **edge-case and
-technique-driven testing**. This plan covers a focused starter set of eight modules.
+technique-driven testing**. This plan covers a focused starter set of seven modules.
 
 ## 2. Objectives
 - Exercise a range of UI behaviors: authentication, form state, dynamic DOM, native dialogs, async loading, and input handling.

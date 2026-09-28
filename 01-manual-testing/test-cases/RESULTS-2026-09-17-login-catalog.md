@@ -16,10 +16,10 @@
 | Total cases | 23 |
 | Passed | 22 |
 | Failed | 0 |
-| Defects found | 1 (via TC-CAT-012 — behaving as designed) |
+| Defects found | 1 (BUG-001, found by TC-CAT-012) |
 
 All planned login and catalog cases executed. No functional failures in core flows.
-One intentional defect surfaced under `problem_user` (see [BUG-001](../bug-reports/BUG-001-problem-user-identical-images.md)).
+One defect surfaced under `problem_user` (SauceDemo seeds it deliberately) (see [BUG-001](../bug-reports/BUG-001-problem-user-identical-images.md)).
 
 ## Login results
 | Case | Description | Result | Notes |
