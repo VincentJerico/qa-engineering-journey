@@ -31,7 +31,7 @@ test.describe('SauceDemo — Shopping Cart', () => {
     await inventory.addToCart(PRODUCTS.backpack.id);
     await inventory.openCart();
     await cart.expectLoaded();
-    expect(await cart.itemNames()).toEqual([PRODUCTS.backpack.name]);
+    await expect(cart.itemNames).toHaveText([PRODUCTS.backpack.name]);
     expect(await cart.firstQuantity()).toBe('1');
   });
 
@@ -40,7 +40,11 @@ test.describe('SauceDemo — Shopping Cart', () => {
     await inventory.addToCart(PRODUCTS.bikeLight.id);
     await inventory.addToCart(PRODUCTS.boltTShirt.id);
     await inventory.openCart();
-    await expect(cart.items).toHaveCount(3);
+    await expect(cart.itemNames).toHaveText([
+      PRODUCTS.backpack.name,
+      PRODUCTS.bikeLight.name,
+      PRODUCTS.boltTShirt.name,
+    ]);
   });
 
   test('TC-CART-004: quantity is fixed at 1 (no editable control)', async ({ page }) => {
@@ -56,7 +60,7 @@ test.describe('SauceDemo — Shopping Cart', () => {
     await inventory.openCart();
     await expect(cart.items).toHaveCount(2);
     await cart.removeFirst();
-    await expect(cart.items).toHaveCount(1);
+    await expect(cart.itemNames).toHaveText([PRODUCTS.bikeLight.name]);
   });
 
   test('TC-CART-006: removing all items empties the cart', async () => {
@@ -64,9 +68,10 @@ test.describe('SauceDemo — Shopping Cart', () => {
     await inventory.addToCart(PRODUCTS.bikeLight.id);
     await inventory.openCart();
     await expect(cart.items).toHaveCount(2);
+    await expect(inventory.cartBadge).toHaveText('2');
     await cart.removeAll();
     await expect(cart.items).toHaveCount(0);
-    await expect(cart.cartBadge).toHaveCount(0);
+    await expect(inventory.cartBadge).toHaveCount(0);
   });
 
   test('TC-CART-007: Continue Shopping returns to inventory with cart retained', async () => {
@@ -74,7 +79,7 @@ test.describe('SauceDemo — Shopping Cart', () => {
     await inventory.openCart();
     await cart.continueShopping();
     await inventory.expectLoaded();
-    expect(await inventory.badgeCount()).toBe(1);
+    await expect(inventory.cartBadge).toHaveText('1');
   });
 
   test('TC-CART-008: Checkout proceeds to the information page', async ({ page }) => {
@@ -105,13 +110,16 @@ test.describe('SauceDemo — Shopping Cart', () => {
 /**
  * TC-CART-009 — empty-cart checkout (BUG-002).
  * A real store should block checkout with an empty cart, but SauceDemo completes a $0 order.
- * This asserts the CORRECT behavior (Finish should not be reachable / order should not complete)
- * and is marked as an expected failure to document the defect.
+ * This asserts that CURRENT buggy behavior, so it goes red when the bug is fixed and on any
+ * unrelated failure.
  * See ../../01-manual-testing/bug-reports/BUG-002-empty-cart-checkout.md
  */
 test.describe('SauceDemo — Cart (known defect)', () => {
-  test('TC-CART-009: empty cart should not complete an order [BUG-002]', async ({ page }) => {
-    test.fail(true, 'BUG-002: empty cart can be checked out to a completed $0 order');
+  test('TC-CART-009: empty cart completes an order [BUG-002]', async ({ page }) => {
+    test.info().annotations.push({
+      type: 'issue',
+      description: 'BUG-002: empty cart can be checked out to a completed $0 order',
+    });
     const login = new LoginPage(page);
     const inventory = new InventoryPage(page);
     const cart = new CartPage(page);
@@ -121,14 +129,12 @@ test.describe('SauceDemo — Cart (known defect)', () => {
     await login.login(USERS.standard, PASSWORD);
     await inventory.expectLoaded();
     await inventory.openCart();
+    await expect(cart.items).toHaveCount(0);
 
-    // Cart is empty here.
     await cart.checkout();
     await checkout.fillInformation(CUSTOMER.firstName, CUSTOMER.lastName, CUSTOMER.postalCode);
     await checkout.continue();
     await checkout.finish();
-
-    // Expected (correct) behavior: an empty cart should NOT reach the confirmation page.
-    await expect(page).not.toHaveURL(/checkout-complete\.html/); // expected to fail
+    await checkout.expectComplete();
   });
 });

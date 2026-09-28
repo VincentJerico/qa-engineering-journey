@@ -17,11 +17,4 @@ export class CheckboxesPage {
   nth(i: number): Locator {
     return this.checkboxes.nth(i);
   }
-
-  async states(): Promise<boolean[]> {
-    const count = await this.checkboxes.count();
-    const result: boolean[] = [];
-    for (let i = 0; i < count; i++) result.push(await this.checkboxes.nth(i).isChecked());
-    return result;
-  }
 }
