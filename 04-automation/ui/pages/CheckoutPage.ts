@@ -10,6 +10,7 @@ export class CheckoutPage {
   readonly cancelButton: Locator;
   readonly finishButton: Locator;
   readonly error: Locator;
+  readonly itemNames: Locator;
   readonly itemTotal: Locator;
   readonly tax: Locator;
   readonly total: Locator;
@@ -25,6 +26,7 @@ export class CheckoutPage {
     this.cancelButton = page.locator('[data-test="cancel"]');
     this.finishButton = page.locator('[data-test="finish"]');
     this.error = page.locator('[data-test="error"]');
+    this.itemNames = page.locator('.cart_item .inventory_item_name');
     this.itemTotal = page.locator('.summary_subtotal_label');
     this.tax = page.locator('.summary_tax_label');
     this.total = page.locator('.summary_total_label');

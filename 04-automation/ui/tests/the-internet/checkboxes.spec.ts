@@ -14,7 +14,9 @@ test.describe('The Internet — Checkboxes', () => {
   });
 
   test('TC-TI-CHK-001: default states are [unchecked, checked]', async () => {
-    expect(await cb.states()).toEqual([false, true]);
+    await expect(cb.checkboxes).toHaveCount(2);
+    await expect(cb.nth(0)).not.toBeChecked();
+    await expect(cb.nth(1)).toBeChecked();
   });
 
   test('TC-TI-CHK-002: check the first checkbox', async () => {
@@ -28,21 +30,24 @@ test.describe('The Internet — Checkboxes', () => {
   });
 
   test('TC-TI-CHK-004: toggle first twice returns to original state', async () => {
-    const before = await cb.nth(0).isChecked();
+    await expect(cb.nth(0)).not.toBeChecked();
     await cb.nth(0).click();
+    await expect(cb.nth(0)).toBeChecked();
     await cb.nth(0).click();
-    expect(await cb.nth(0).isChecked()).toBe(before);
+    await expect(cb.nth(0)).not.toBeChecked();
   });
 
   test('TC-TI-CHK-005: both can be checked simultaneously', async () => {
     await cb.nth(0).check();
     await cb.nth(1).check();
-    expect(await cb.states()).toEqual([true, true]);
+    await expect(cb.nth(0)).toBeChecked();
+    await expect(cb.nth(1)).toBeChecked();
   });
 
   test('TC-TI-CHK-006: both can be unchecked simultaneously', async () => {
     await cb.nth(0).uncheck();
     await cb.nth(1).uncheck();
-    expect(await cb.states()).toEqual([false, false]);
+    await expect(cb.nth(0)).not.toBeChecked();
+    await expect(cb.nth(1)).not.toBeChecked();
   });
 });

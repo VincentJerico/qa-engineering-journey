@@ -19,8 +19,4 @@ export class JsAlertsPage {
   async goto() {
     await this.page.goto('/javascript_alerts');
   }
-
-  async resultText(): Promise<string> {
-    return (await this.result.innerText()).trim();
-  }
 }

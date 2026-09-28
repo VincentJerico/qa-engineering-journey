@@ -61,9 +61,9 @@ ui/
 
 ## Known-defect tests
 
-Two tests document confirmed bugs and are marked `test.fail()` — they assert the _correct_ behavior,
-so Playwright expects them to fail until the bug is fixed (a green `test.fail()` means "still broken";
-if it ever passes, Playwright flags it, telling you the bug was fixed):
+Two tests document confirmed bugs. Each asserts the _current_ buggy behavior and carries an `issue`
+annotation naming the bug. Green means "still broken". The test goes red when the bug is fixed, and
+also on any unrelated failure (a `test.fail()` would have absorbed that as an expected failure):
 
 - `TC-CAT-012` → [BUG-001](../../01-manual-testing/bug-reports/BUG-001-problem-user-identical-images.md) (problem_user identical images)
 - `TC-CART-009` → [BUG-002](../../01-manual-testing/bug-reports/BUG-002-empty-cart-checkout.md) (empty-cart checkout)
