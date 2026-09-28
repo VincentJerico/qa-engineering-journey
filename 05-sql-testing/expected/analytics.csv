@@ -1,0 +1,21 @@
+report
+"--- A1 revenue per customer ---"
+id,name,orders,revenue
+1,"Alice Reyes",1,34.97
+3,"Carol Cruz",1,19.98
+2,"Bob Santos",1,15.0
+report
+"--- A2 top products by units ---"
+id,name,units_sold
+1,Widget,6
+2,Gadget,1
+report
+"--- A3 customers with no orders ---"
+id,name
+4,"Dave Lim"
+5,"Eve Tan"
+6,"Frank Uy"
+report
+"--- A4 order value summary ---"
+order_count,avg_order_value,min_total,max_total
+4,39.99,9.99,100.0
