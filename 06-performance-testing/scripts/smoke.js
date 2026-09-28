@@ -3,6 +3,8 @@
 import { sleep } from 'k6';
 import { readFlow } from './lib/config.js';
 
+export { setup } from './lib/config.js';
+
 export const options = {
   vus: 1,
   iterations: 5,
@@ -13,7 +15,7 @@ export const options = {
   },
 };
 
-export default function () {
-  readFlow();
+export default function (data) {
+  readFlow(data);
   sleep(1);
 }

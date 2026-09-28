@@ -3,6 +3,8 @@
 import { sleep } from 'k6';
 import { readFlow } from './lib/config.js';
 
+export { setup } from './lib/config.js';
+
 export const options = {
   stages: [
     { duration: '20s', target: 10 }, // ramp up to 10 virtual users
@@ -16,7 +18,7 @@ export const options = {
   },
 };
 
-export default function () {
-  readFlow();
+export default function (data) {
+  readFlow(data);
   sleep(1);
 }
