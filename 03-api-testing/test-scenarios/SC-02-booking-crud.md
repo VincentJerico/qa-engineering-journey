@@ -53,6 +53,7 @@
 |-----------|----------|
 | Status code | 200 |
 | Body | reflects all updated fields |
+| Persisted | `GET /booking/:id` returns the full updated booking |
 
 ---
 
@@ -62,7 +63,7 @@
 | Assertion | Expected |
 |-----------|----------|
 | Status code | 200 |
-| Body | `firstname` updated; other fields unchanged |
+| Persisted | `GET /booking/:id` shows `firstname` updated; other fields unchanged |
 
 ---
 
@@ -83,5 +84,5 @@
 ---
 
 ## Notes
-- SC-API-011 → 016 form one end-to-end CRUD lifecycle and are best run in sequence on a
-  freshly-created booking (avoids depending on shared/pre-existing data).
+- SC-API-010 → 016 cover the CRUD lifecycle; each scenario creates its own booking, so none
+  depends on shared/pre-existing data or on another scenario running first.

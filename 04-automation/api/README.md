@@ -26,13 +26,13 @@ api/
 └── tests/
     ├── helpers.ts           # getToken(), createBooking(), sampleBooking()
     ├── health-auth.spec.ts  # SC-API-001..004
-    ├── booking-crud.spec.ts # SC-API-010..016 (serial lifecycle)
+    ├── booking-crud.spec.ts # SC-API-010..016 (CRUD lifecycle)
     └── negative.spec.ts     # SC-API-020..025
 ```
 
 ## Notes
 
-- `booking-crud.spec.ts` runs **serially** on one freshly-created booking (create → read → put →
-  patch → delete → verify), so it doesn't depend on shared data.
+- Each `booking-crud.spec.ts` test creates its own booking, so tests don't depend on shared data
+  or on run order. Writes are verified by reading the booking back, not by the echoed response.
 - Negative tests assert **side effects** (record unchanged / still present), not just status codes.
 - Tests hit the live public API; results depend on it being reachable.
