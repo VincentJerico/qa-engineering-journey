@@ -1,8 +1,5 @@
 -- Analytics / reporting queries for shop.db (JOINs and aggregation practice).
--- Run all:  sqlite3 shop.db < queries/analytics.sql
-
-.headers on
-.mode column
+-- Run all:  sqlite3 -header -column shop.db < queries/analytics.sql
 
 -- A1: Revenue per customer (only valid orders with a real customer) --------
 SELECT '--- A1 revenue per customer ---' AS report;
