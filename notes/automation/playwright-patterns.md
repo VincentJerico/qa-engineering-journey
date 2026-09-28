@@ -34,7 +34,8 @@ Prefer `await expect(locator).toHaveCount(3)` over `expect(await locator.count()
 
 ## API testing with Playwright's `request` fixture
 - No browser needed → no `playwright install`, faster CI.
-- Chain a lifecycle with `test.describe.serial` (create → read → update → delete → verify).
+- Give each lifecycle test its own record (create → act → verify) instead of chaining one record
+  through `test.describe.serial`; on a shared server the chain turns one failure into a cascade.
 - Assert **side effects** for negative cases (record unchanged / still present), not just status codes.
 
 ## Traceability
