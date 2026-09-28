@@ -31,6 +31,7 @@
 | Assertion | Expected |
 |-----------|----------|
 | Status code | 403 |
+| Effect | booking is **not** modified |
 
 ---
 
@@ -48,19 +49,21 @@
 | Assertion | Expected |
 |-----------|----------|
 | Status code | 403 |
+| Effect | booking is **not** modified |
 
 ---
 
 ### SC-API-025 — Create with malformed / incomplete body
 **Method:** `POST /booking` · **Auth:** none · **Priority:** Medium · **Technique:** Negative / boundary
-**Body:** `{"firstname":"OnlyName"}` (missing required fields)
+**Body:** `{"firstname":"OnlyName-<timestamp>"}` (missing required fields; unique name so the effect is checkable)
 | Assertion | Expected |
 |-----------|----------|
-| Status code | Document actual (Restful-Booker tends to return **500** for malformed create) |
+| Status code | **500** (observed actual, pinned exactly so a 502/503 outage or a fix to 400 is noticed) |
+| Effect | no booking created (`GET /booking?firstname=<name>` → `[]`) |
 | Note | Record actual behavior; on a real API a **400 Bad Request** would be expected |
 
 ---
 
 ## Notes
-- SC-API-021/023 also assert the **side effect** (record unchanged / still present), not just the
+- SC-API-021..025 also assert the **side effect** (record unchanged / still present), not just the
   status code — access-control tests should prove the operation had no effect.
