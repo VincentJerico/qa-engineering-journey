@@ -7,7 +7,7 @@ using [k6](https://k6.io). Mirrors the API functional work in [03-api-testing](.
 ```
 06-performance-testing/
 ├── scripts/
-│   ├── lib/config.js     # shared BASE_URL + the read-heavy user flow
+│   ├── lib/config.js     # shared BASE_URL, setup() booking, and the read-heavy user flow
 │   ├── smoke.js          # 1 VU — sanity + baseline latency
 │   ├── load.js           # 10 VUs — steady expected load
 │   └── stress.js         # ramp to 40 VUs — find the degradation point
@@ -41,7 +41,12 @@ k6 run -e BASE_URL=https://your-host scripts/load.js
 - **max latency** — tail spikes are the early warning of saturation (see TER-006).
 - **checks** — functional correctness must hold under load, not just status 200.
 
-Thresholds are defined per script in `options.thresholds` and act as pass/fail gates.
+Thresholds are defined per script in `options.thresholds` and act as pass/fail gates on manual runs.
+CI only compiles the scripts with `k6 inspect`; it never sends load to the shared demo, so no
+threshold is enforced in CI.
+
+Each run's `setup()` creates one booking and the read flow fetches that id, so the run doesn't
+depend on someone else's booking surviving.
 
 ## Results
 See [RESULTS-2026-09-18-restful-booker.md](RESULTS-2026-09-18-restful-booker.md) — smoke and load were
