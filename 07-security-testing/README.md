@@ -17,7 +17,7 @@ destructive actions.
 ```
 
 ## Approach
-Mapped to the [OWASP Top 10 (2021)](https://owasp.org/Top10/). Each check is defensive: verify a
+Mapped to the [OWASP Top 10 (2021)](https://top10.owasp.org/2021/). Each check is defensive: verify a
 control exists (or document that it's missing) without attempting to break or damage anything.
 
 ## Highlights from the live run
