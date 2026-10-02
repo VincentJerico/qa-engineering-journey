@@ -1,19 +1,21 @@
-# Bug Reporting — Notes
+# Bug reporting notes
 
-## Anatomy of a good bug report
-1. **Title** — concise, specific: *what* is wrong and *where* (not "login broken").
-2. **Environment** — app/version, browser, OS, user/role.
-3. **Steps to reproduce** — numbered, minimal, deterministic.
-4. **Expected result** — what should happen (cite the requirement if there is one).
-5. **Actual result** — what happened, with evidence (response, screenshot, DOM values).
-6. **Severity / Priority** — see below.
-7. **Evidence** — logs, IDs, exact values (e.g. "1 distinct image src instead of 6").
+## What a good bug report contains
 
-## Severity vs Priority
-- **Severity** = technical impact of the defect (how badly it breaks things).
-- **Priority** = business urgency to fix it (how soon).
-- They're independent: a typo on the homepage can be low severity / high priority; a crash in a
-  rarely-used admin export can be high severity / low priority.
+1. Title: short and specific. Say what is wrong and where, not "login broken".
+2. Environment: app version, browser, OS, and the user or role.
+3. Steps to reproduce: numbered, minimal and repeatable.
+4. Expected result: what should happen. Cite the requirement if there is one.
+5. Actual result: what happened, with evidence such as the response, a screenshot or DOM values.
+6. Severity and priority (see below).
+7. Evidence: logs, IDs and exact values, for example "1 distinct image src instead of 6".
+
+## Severity vs priority
+
+Severity is the technical impact: how badly the defect breaks things. Priority is the business
+urgency: how soon it needs fixing. The two are independent. A typo on the homepage can be low
+severity and high priority, while a crash in a rarely used admin export can be high severity and
+low priority.
 
 | | High priority | Low priority |
 |---|---|---|
@@ -21,9 +23,11 @@
 | **Low severity** | Misspelled brand on landing page | Minor cosmetic issue deep in the app |
 
 ## Lessons from this repo
-- **Prove the defect with data, not vibes.** [BUG-001](../../01-manual-testing/bug-reports/BUG-001-problem-user-identical-images.md)
-  compares image `src` counts (1 vs a 6-image baseline) rather than "images look wrong".
-- **Show the side effect for access-control/state bugs.** [BUG-002](../../01-manual-testing/bug-reports/BUG-002-empty-cart-checkout.md)
-  follows the empty cart all the way to a completed $0 order — the impact, not just a wrong screen.
-- **Separate defects from observations.** On a practice API, odd status codes (auth 200, delete 201)
-  are documented as *observations*; on a real API they'd be raised as bugs. Be explicit about which.
+
+- Prove the defect with data. [BUG-001](../../01-manual-testing/bug-reports/BUG-001-problem-user-identical-images.md)
+  compares image `src` counts (1 against a baseline of 6) instead of saying the images look wrong.
+- For state or access bugs, show the side effect. [BUG-002](../../01-manual-testing/bug-reports/BUG-002-empty-cart-checkout.md)
+  follows the empty cart all the way to a completed $0 order, which is the real impact.
+- Keep defects and observations apart. On a practice API, odd status codes (200 on bad auth, 201
+  on delete) are recorded as observations. On a real API they would be raised as bugs. Say which
+  one you're doing.
