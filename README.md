@@ -18,6 +18,20 @@ All 9 areas are done. Each one went through the same steps. I wrote a plan and t
 - A [CI pipeline](.github/workflows/ci.yml) that runs on every PR and every push to `main`. It runs the UI and API suites, the AI evals and the SQL checks, and compiles the k6 scripts. See [09-ci-cd](09-ci-cd/).
 - Two bug reports. [BUG-001](01-manual-testing/bug-reports/BUG-001-problem-user-identical-images.md) covers identical product images, and [BUG-002](01-manual-testing/bug-reports/BUG-002-empty-cart-checkout.md) covers an empty cart that checks out as a $0 order.
 
+## Related projects
+
+Each of these repositories goes deeper on one skill.
+
+- [taskflow-under-test](https://github.com/VincentJerico/taskflow-under-test) is a small
+  task-manager app I built to test, with unit, API and E2E suites and planted bugs the suite has to
+  catch.
+- [playwright-framework-template](https://github.com/VincentJerico/playwright-framework-template)
+  is a reusable Playwright and TypeScript starter with fixtures, page objects and cross-browser CI.
+- [api-testing-framework](https://github.com/VincentJerico/api-testing-framework) has typed API
+  tests on Playwright's request API, with Zod schema checks and automatic cleanup.
+- [accessibility-testing](https://github.com/VincentJerico/accessibility-testing) checks SauceDemo
+  against WCAG 2.2 AA with axe-core and a keyboard audit.
+
 ## Repository structure
 
 | Folder | Focus |
@@ -25,13 +39,13 @@ All 9 areas are done. Each one went through the same steps. I wrote a plan and t
 | [`01-manual-testing/`](01-manual-testing/) | Test plans, test cases, bug reports, and checklists |
 | [`02-test-design/`](02-test-design/) | Test design techniques: equivalence partitioning, boundary value analysis, decision tables, state transition |
 | [`03-api-testing/`](03-api-testing/) | API collections, test scenarios, and documentation |
-| [`04-automation/`](04-automation/) | UI automation, API automation, and shared utilities |
+| [`04-automation/`](04-automation/) | UI automation and API automation |
 | [`05-sql-testing/`](05-sql-testing/) | SQL queries and data-validation test scenarios |
 | [`06-performance-testing/`](06-performance-testing/) | Load, stress, and performance testing artifacts |
 | [`07-security-testing/`](07-security-testing/) | Security testing notes and findings |
 | [`08-ai-testing/`](08-ai-testing/) | Testing AI/LLM-based systems |
 | [`09-ci-cd/`](09-ci-cd/) | Continuous integration and delivery pipelines |
-| [`10-projects/`](10-projects/) | End-to-end practice projects |
+| [`10-projects/`](10-projects/) | The brief for TaskFlow, the app I built to test |
 | [`notes/`](notes/) | Study notes by topic |
 | [`daily-log/`](daily-log/) | Daily learning log |
 | [`.github/workflows/`](.github/workflows/) | GitHub Actions workflows |
@@ -66,6 +80,3 @@ The SQL checks, k6 scripts and AI evals each have a run block in their area READ
 [05-sql-testing](05-sql-testing/), [06-performance-testing](06-performance-testing/),
 [08-ai-testing](08-ai-testing/).
 
-## Notes
-
-Empty folders hold a `.gitkeep` file so git keeps them.
