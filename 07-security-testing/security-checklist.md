@@ -1,7 +1,7 @@
 # Web/API Security Testing Checklist (OWASP-oriented)
 
 A practical, defensive checklist for black-box security testing, mapped to the
-[OWASP Top 10 (2021)](https://owasp.org/Top10/). Use it as a baseline pass on any web app or API.
+[OWASP Top 10 (2021)](https://top10.owasp.org/2021/). Use it as a baseline pass on any web app or API.
 
 ## A01 — Broken Access Control
 - [ ] Protected pages/endpoints require authentication (direct-URL access is blocked).
