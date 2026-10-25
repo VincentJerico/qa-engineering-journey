@@ -1,10 +1,17 @@
-# QA Engineering Journey
+<h1>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/banner-dark.svg" />
+  <img alt="QA Engineering Journey: Manual testing to CI, across 9 areas, each run against a live app" src=".github/assets/banner-light.svg" width="100%" />
+</picture>
+</h1>
 
 [![CI](https://github.com/VincentJerico/qa-engineering-journey/actions/workflows/ci.yml/badge.svg)](https://github.com/VincentJerico/qa-engineering-journey/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 ![Manual cases](https://img.shields.io/badge/manual%20cases-91-informational)
 ![Automated tests](https://img.shields.io/badge/automated%20tests-108-success)
 ![Last Commit](https://img.shields.io/github/last-commit/VincentJerico/qa-engineering-journey)
+
+<sub>QA portfolio: **01 journey** · [02 framework](https://github.com/VincentJerico/playwright-framework-template) · [03 api](https://github.com/VincentJerico/api-testing-framework) · [04 taskflow](https://github.com/VincentJerico/taskflow-under-test) · [05 accessibility](https://github.com/VincentJerico/accessibility-testing) · [06 security](https://github.com/VincentJerico/security-testing) · [07 performance](https://github.com/VincentJerico/performance-testing) · [profile](https://github.com/VincentJerico)</sub>
 
 My QA learning and portfolio repository. It covers manual testing, test design, API testing, UI and API automation, SQL, performance, security, AI testing and CI/CD.
 
