@@ -43,7 +43,9 @@ k6 run -e BASE_URL=https://your-host scripts/load.js
 
 Thresholds are defined per script in `options.thresholds` and act as pass/fail gates on manual runs.
 CI only compiles the scripts with `k6 inspect`; it never sends load to the shared demo, so no
-threshold is enforced in CI.
+threshold is enforced in CI. Before that, CI checks that `k6 inspect` rejects
+[`selftest/broken-script.js`](selftest/broken-script.js), a deliberately broken script, so the
+compile gate is proven able to fail.
 
 Each run's `setup()` creates one booking and the read flow fetches that id, so the run doesn't
 depend on someone else's booking surviving.
