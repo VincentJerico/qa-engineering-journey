@@ -2,7 +2,9 @@
 
 Automated API tests for [Restful-Booker](https://restful-booker.herokuapp.com), derived from the
 scenarios in [TP-003](../../03-api-testing/documentation/TP-003-restful-booker.md). Each test title
-carries its scenario ID (e.g. `SC-API-011`) for traceability.
+carries its scenario ID (e.g. `SC-API-011`) and a tag with that scenario's priority (`@high`,
+`@medium`, `@low`), both checked by the [traceability gate](../../09-ci-cd/traceability/). In CI, a
+test that only passes on a retry fails the run (`failOnFlakyTests`).
 
 ## Stack
 
@@ -15,6 +17,7 @@ carries its scenario ID (e.g. `SC-API-011`) for traceability.
 cd 04-automation/api
 npm install
 npm test           # runs all API specs
+npm run test:high  # only High-priority scenarios (also test:medium, test:low)
 npm run report     # open the last HTML report
 ```
 

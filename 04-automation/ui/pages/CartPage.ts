@@ -14,8 +14,8 @@ export class CartPage {
     this.title = page.locator('.title');
     this.items = page.locator('.cart_item');
     this.itemNames = page.locator('.cart_item .inventory_item_name');
-    this.checkoutButton = page.locator('[data-test="checkout"]');
-    this.continueShoppingButton = page.locator('[data-test="continue-shopping"]');
+    this.checkoutButton = page.getByTestId('checkout');
+    this.continueShoppingButton = page.getByTestId('continue-shopping');
   }
 
   async expectLoaded() {
