@@ -1,0 +1,53 @@
+name: New test case
+description: Propose a manual case (and its automation) for one of the apps under test.
+title: 'CASE: '
+labels: [test-case]
+body:
+  - type: input
+    id: module
+    attributes:
+      label: Module
+      description: Which case document it belongs in.
+      placeholder: 01-manual-testing/test-cases/TC-CHECKOUT-saucedemo.md
+    validations:
+      required: true
+  - type: input
+    id: title
+    attributes:
+      label: Case title
+      placeholder: Postal code rejects letters
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: Becomes the test's @high / @medium / @low tag.
+      options: [High, Medium, Low]
+    validations:
+      required: true
+  - type: dropdown
+    id: technique
+    attributes:
+      label: Technique
+      options: [Positive, Negative, Boundary value, Equivalence partitioning, Decision table, State transition, Exploratory]
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps and expected results
+      value: |
+        | # | Step | Test data | Expected result |
+        |---|------|-----------|-----------------|
+        | 1 |      |           |                 |
+    validations:
+      required: true
+  - type: dropdown
+    id: automate
+    attributes:
+      label: Automate it?
+      description: A manual-only case needs a reason in 09-ci-cd/traceability/manual-only.json.
+      options: [Yes, No, manual only]
+    validations:
+      required: true

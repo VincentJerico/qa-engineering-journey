@@ -18,6 +18,9 @@ enforce this yet; **All gates** is the single check to require when it does.
 - **Timeouts** on every job, so a hung live site fails fast instead of holding a runner for 6 hours.
 - **Flakiness fails the build**: Playwright retries twice in CI (keeping traces), but a test that only passes on a retry fails the run (`failOnFlakyTests`).
 - **One engine failing doesn't hide the others**: the browser matrix doesn't stop at the first failure.
+- **Gates prove they can fail**: the traceability gate, the SQL check, the k6 compile check and the AI
+  evals (negative controls in [`08-ai-testing/eval/controls.mjs`](../08-ai-testing/eval/controls.mjs))
+  each run a self-test with planted defects before the real check, so a broken gate can't pass vacuously.
 
 ## Jobs
 
@@ -28,8 +31,8 @@ enforce this yet; **All gates** is the single check to require when it does.
 | Playwright API tests | 17 API tests pass against Restful-Booker, after the same gates | any gate or test fails, or a test is flaky |
 | Traceability gate | every automated test maps to a manual case, carries that case's priority tag, and every case has a test; [`TRACEABILITY.md`](../TRACEABILITY.md) is current. Its self-test runs first | a test has no case ID or an unknown one, a priority tag is wrong, a case loses its test, or the matrix is stale |
 | AI eval harness | every eval in [`08-ai-testing`](../08-ai-testing/) passes against the mock model | any eval fails |
-| SQL data-validation checks | [`05-sql-testing/check.sh`](../05-sql-testing/check.sh) output matches `expected/` | a query or the seed drifts |
-| k6 scripts compile | each script in [`06-performance-testing/scripts`](../06-performance-testing/scripts/) passes `k6 inspect` | a script does not compile |
+| SQL data-validation checks | [`05-sql-testing/check.sh`](../05-sql-testing/check.sh) output matches `expected/`. Its [self-test](../05-sql-testing/selftest.sh) runs first | a query or the seed drifts, or a query errors |
+| k6 scripts compile | each script in [`06-performance-testing/scripts`](../06-performance-testing/scripts/) passes `k6 inspect`. A [broken fixture](../06-performance-testing/selftest/broken-script.js) must fail first | a script does not compile |
 | All gates | every job above passed; writes one table of results | any job above failed or was cancelled |
 
 The k6 job generates no load. Load and stress runs against the public demo API stay manual, so

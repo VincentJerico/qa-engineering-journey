@@ -7,6 +7,7 @@ service needed — the database is rebuilt from `schema.sql`.
 ```
 05-sql-testing/
 ├── check.sh                         # CI gate: rebuild + diff against expected/
+├── selftest.sh                      # proves check.sh fails on planted defects
 ├── expected/                        # golden query output (the defects the checks must catch)
 ├── schema.sql                       # schema + seed data (with deliberate data-quality issues)
 ├── queries/
@@ -28,6 +29,12 @@ sqlite3 -header -column shop.db < queries/analytics.sql
 `./check.sh` rebuilds the database in a temp dir, runs both query files, and diffs the output
 against `expected/*.csv`. CI runs it on every push. After an intentional change to the seed or
 a query, run `./check.sh --update` and review the diff to `expected/`.
+
+`./selftest.sh` runs first in CI and proves the gate can fail. In temporary copies it plants a
+changed value, a missing row, a query with a syntax error, and a failing query whose expected output
+is also empty. That last one only fails if sqlite errors stop the run, so it guards against errors
+being swallowed. `check.sh` strips carriage returns from sqlite's CSV output, because macOS builds
+end rows with CRLF and Linux builds with LF.
 
 `shop.db` is a build artifact (git-ignored) — regenerate it any time from `schema.sql`.
 

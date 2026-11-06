@@ -155,6 +155,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - run: command -v sqlite3 || (sudo apt-get update && sudo apt-get install -y sqlite3)
+      - run: 05-sql-testing/selftest.sh # proves the check can fail before trusting it
       - run: 05-sql-testing/check.sh
 
   k6-scripts:
@@ -167,6 +168,12 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: grafana/setup-k6-action@v1
+      - name: Self-test (a broken script must not compile)
+        run: |
+          if k6 inspect selftest/broken-script.js > /dev/null 2>&1; then
+            echo "FAIL: k6 accepted selftest/broken-script.js, so this gate can't catch a broken script"; exit 1
+          fi
+          echo "PASS: k6 rejects a broken script"
       - run: for s in scripts/*.js; do k6 inspect "$s" > /dev/null; echo "OK $s"; done
 
   # One table with every gate's result, and one check that is green only if all of them are.

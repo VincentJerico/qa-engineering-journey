@@ -1,0 +1,86 @@
+name: Bug report
+description: A defect found in an app under test, or in this repo's own tests or tooling.
+title: 'BUG: '
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Same fields as the reports in `01-manual-testing/bug-reports/`. One bug per issue.
+  - type: input
+    id: application
+    attributes:
+      label: Application
+      description: The app and URL, or the part of this repo.
+      placeholder: SauceDemo, https://www.saucedemo.com
+    validations:
+      required: true
+  - type: input
+    id: found-in
+    attributes:
+      label: Found in
+      placeholder: Cart → Checkout flow
+    validations:
+      required: true
+  - type: input
+    id: related-case
+    attributes:
+      label: Related case
+      description: The case ID that found it, if any.
+      placeholder: TC-CART-009
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: How bad the impact is.
+      options: [Critical, High, Medium, Low]
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How soon it should be fixed.
+      options: [High, Medium, Low]
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: Chrome 130, desktop viewport, standard_user
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+      description: What happened, with exact messages, values and URLs.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Screenshots, a trace, or a failing test run.
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact
+      description: Who it affects and why the severity fits.
