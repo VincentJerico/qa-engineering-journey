@@ -47,6 +47,7 @@ Each of these repositories goes deeper on one skill.
 | [`08-ai-testing/`](08-ai-testing/) | Testing AI/LLM-based systems |
 | [`09-ci-cd/`](09-ci-cd/) | Continuous integration and delivery pipelines, and the traceability gate |
 | [`TRACEABILITY.md`](TRACEABILITY.md) | Generated matrix: every manual case and the test that covers it |
+| [`CONTRIBUTING.md`](CONTRIBUTING.md) | How a case becomes a test, and the checks to run before a PR |
 | [`10-projects/`](10-projects/) | The brief for TaskFlow, the app I built to test |
 | [`notes/`](notes/) | Study notes by topic |
 | [`daily-log/`](daily-log/) | Daily learning log |
