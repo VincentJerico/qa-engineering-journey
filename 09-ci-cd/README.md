@@ -12,6 +12,7 @@ enforce this yet.
 | Repository sanity check | `README.md`, `LICENSE` and `.gitignore` exist | a required file is missing |
 | Playwright UI tests | 91 UI tests pass against SauceDemo and The Internet, after lint, format and typecheck gates | any gate or test fails |
 | Playwright API tests | 17 API tests pass against Restful-Booker, after the same gates | any gate or test fails |
+| Traceability gate | every automated test maps to a manual case and every case has a test; [`TRACEABILITY.md`](../TRACEABILITY.md) is current. Its self-test runs first | a test has no case ID or an unknown one, a case loses its test, or the matrix is stale |
 | AI eval harness | every eval in [`08-ai-testing`](../08-ai-testing/) passes against the mock model | any eval fails |
 | SQL data-validation checks | [`05-sql-testing/check.sh`](../05-sql-testing/check.sh) output matches `expected/` | a query or the seed drifts |
 | k6 scripts compile | each script in [`06-performance-testing/scripts`](../06-performance-testing/scripts/) passes `k6 inspect` | a script does not compile |

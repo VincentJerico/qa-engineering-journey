@@ -16,6 +16,7 @@ All 9 areas are done. Each one went through the same steps. I wrote a plan and t
 - API testing of [Restful-Booker](03-api-testing/documentation/TP-003-restful-booker.md), with 17 scenarios, a [Postman collection](03-api-testing/collections/) and 5 notes on the API's design.
 - 108 automated tests. There are 91 [Playwright UI](04-automation/ui/) tests across 2 apps and 17 [Playwright API](04-automation/api/) tests, and each one maps to a manual case ID.
 - A [CI pipeline](.github/workflows/ci.yml) that runs on every PR and every push to `main`. It runs the UI and API suites, the AI evals and the SQL checks, and compiles the k6 scripts. See [09-ci-cd](09-ci-cd/).
+- A [traceability matrix](TRACEABILITY.md) that links all 108 manual cases to the automated tests that cover them. A CI gate regenerates it and fails if a test has no case, points at a case that doesn't exist, or a case loses its test. A self-test proves the gate can fail. See [09-ci-cd/traceability](09-ci-cd/traceability/).
 - Two bug reports. [BUG-001](01-manual-testing/bug-reports/BUG-001-problem-user-identical-images.md) covers identical product images, and [BUG-002](01-manual-testing/bug-reports/BUG-002-empty-cart-checkout.md) covers an empty cart that checks out as a $0 order.
 
 ## Related projects
@@ -44,7 +45,8 @@ Each of these repositories goes deeper on one skill.
 | [`06-performance-testing/`](06-performance-testing/) | Load, stress, and performance testing artifacts |
 | [`07-security-testing/`](07-security-testing/) | Security testing notes and findings |
 | [`08-ai-testing/`](08-ai-testing/) | Testing AI/LLM-based systems |
-| [`09-ci-cd/`](09-ci-cd/) | Continuous integration and delivery pipelines |
+| [`09-ci-cd/`](09-ci-cd/) | Continuous integration and delivery pipelines, and the traceability gate |
+| [`TRACEABILITY.md`](TRACEABILITY.md) | Generated matrix: every manual case and the test that covers it |
 | [`10-projects/`](10-projects/) | The brief for TaskFlow, the app I built to test |
 | [`notes/`](notes/) | Study notes by topic |
 | [`daily-log/`](daily-log/) | Daily learning log |
@@ -57,7 +59,7 @@ Each of these repositories goes deeper on one skill.
 | Manual testing | Done | 2 plans, 91 cases, 2 execution reports, 2 bug reports, 2 checklists |
 | API testing | Done | Plan, 17 scenarios, API reference, Postman collection, execution report |
 | Automation | Done | 91 UI + 17 API Playwright tests, in CI |
-| CI/CD | Active | GitHub Actions: sanity, UI, API, AI evals, SQL checks, k6 compile |
+| CI/CD | Active | GitHub Actions: sanity, UI, API, traceability, AI evals, SQL checks, k6 compile |
 | Test design | Done | Worked examples of EP, BVA, decision tables, state transition |
 | SQL testing | Done | SQLite sample DB, 8 data-validation checks, analytics queries, execution report |
 | Performance testing | Done | k6 smoke/load/stress vs Restful-Booker, execution report |

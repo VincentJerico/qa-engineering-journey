@@ -82,6 +82,23 @@ jobs:
           path: 04-automation/api/playwright-report/
           retention-days: 14
 
+  traceability:
+    name: Traceability gate (manual cases <-> automated tests)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            04-automation/ui/package-lock.json
+            04-automation/api/package-lock.json
+      # Playwright is needed to list the tests; no browsers, because --list doesn't launch one.
+      - run: npm ci --prefix 04-automation/ui && npm ci --prefix 04-automation/api
+      - run: node 09-ci-cd/traceability/selftest.mjs
+      - run: node 09-ci-cd/traceability/trace.mjs
+
   ai-evals:
     name: AI eval harness (mock model)
     runs-on: ubuntu-latest
