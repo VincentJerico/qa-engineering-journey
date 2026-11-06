@@ -12,7 +12,10 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   // A test that only passes on retry fails the run in CI: flakiness is a defect to fix, not hide.
   failOnFlakyTests: !!process.env.CI,
-  reporter: [['list'], ['html', { open: 'never' }]],
+  // CI also writes JSON, which 09-ci-cd/summary turns into the job summary table.
+  reporter: process.env.CI
+    ? [['list'], ['html', { open: 'never' }], ['json', { outputFile: 'results.json' }]]
+    : [['list'], ['html', { open: 'never' }]],
 
   use: {
     baseURL: 'https://restful-booker.herokuapp.com',

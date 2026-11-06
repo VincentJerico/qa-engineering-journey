@@ -15,7 +15,7 @@ All 9 areas are done. Each one went through the same steps. I wrote a plan and t
 - Two manual test cycles against live apps. [SauceDemo](01-manual-testing/test-plans/TP-001-saucedemo.md) had 47 cases and 2 bugs found. [The Internet](01-manual-testing/test-plans/TP-002-the-internet.md) had 44 cases.
 - API testing of [Restful-Booker](03-api-testing/documentation/TP-003-restful-booker.md), with 17 scenarios, a [Postman collection](03-api-testing/collections/) and 5 notes on the API's design.
 - 108 automated tests. There are 91 [Playwright UI](04-automation/ui/) tests across 2 apps and 17 [Playwright API](04-automation/api/) tests, and each one maps to a manual case ID and carries that case's priority as a tag, so `npm run test:high` runs the 59 High-priority cases. The UI suite injects page objects as fixtures, logs in once per run and reuses the session, and fails CI on any test that only passes on a retry.
-- A [CI pipeline](.github/workflows/ci.yml) that runs on every PR and every push to `main`. It runs the UI and API suites, the AI evals and the SQL checks, and compiles the k6 scripts. See [09-ci-cd](09-ci-cd/).
+- A [CI pipeline](.github/workflows/ci.yml) that runs on every PR and every push to `main`, and nightly on Chromium, Firefox and WebKit. It runs the UI and API suites, the traceability gate, the AI evals and the SQL checks, compiles the k6 scripts, and ends in one **All gates** check with a results table. See [09-ci-cd](09-ci-cd/).
 - A [traceability matrix](TRACEABILITY.md) that links all 108 manual cases to the automated tests that cover them. A CI gate regenerates it and fails if a test has no case, points at a case that doesn't exist, or a case loses its test. A self-test proves the gate can fail. See [09-ci-cd/traceability](09-ci-cd/traceability/).
 - Two bug reports. [BUG-001](01-manual-testing/bug-reports/BUG-001-problem-user-identical-images.md) covers identical product images, and [BUG-002](01-manual-testing/bug-reports/BUG-002-empty-cart-checkout.md) covers an empty cart that checks out as a $0 order.
 
@@ -59,7 +59,7 @@ Each of these repositories goes deeper on one skill.
 | Manual testing | Done | 2 plans, 91 cases, 2 execution reports, 2 bug reports, 2 checklists |
 | API testing | Done | Plan, 17 scenarios, API reference, Postman collection, execution report |
 | Automation | Done | 91 UI + 17 API Playwright tests, in CI |
-| CI/CD | Active | GitHub Actions: sanity, UI, API, traceability, AI evals, SQL checks, k6 compile |
+| CI/CD | Active | GitHub Actions: sanity, UI (Chromium on every PR, plus Firefox and WebKit nightly), API, traceability, AI evals, SQL checks, k6 compile, one All gates check |
 | Test design | Done | Worked examples of EP, BVA, decision tables, state transition |
 | SQL testing | Done | SQLite sample DB, 8 data-validation checks, analytics queries, execution report |
 | Performance testing | Done | k6 smoke/load/stress vs Restful-Booker, execution report |

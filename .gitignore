@@ -36,6 +36,7 @@ allure-results/
 allure-report/
 playwright-report/
 test-results/
+results.json
 reports/
 screenshots/
 videos/

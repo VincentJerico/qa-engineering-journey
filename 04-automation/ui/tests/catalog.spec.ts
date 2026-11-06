@@ -124,7 +124,10 @@ test.describe('SauceDemo — Product Catalog', () => {
     async ({ page, inventoryPage: inventory }) => {
       await inventory.addToCart(PRODUCTS.backpack.id);
       await inventory.openProductByName(PRODUCTS.backpack.name);
-      await expect(page.getByTestId(`remove-${PRODUCTS.backpack.id}`)).toBeVisible();
+      // Wait for the detail view itself. Chromium changes the URL before it re-renders, so an
+      // assertion made too early can match the catalog's button instead (WebKit exposed this).
+      await expect(page.locator('.inventory_details_name')).toHaveText(PRODUCTS.backpack.name);
+      await expect(page.getByTestId('remove')).toBeVisible(); // the detail page's own button
       await page.getByTestId('back-to-products').click();
       await expect(inventory.cartBadge).toHaveText('1');
     },

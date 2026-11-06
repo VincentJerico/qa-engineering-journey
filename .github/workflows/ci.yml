@@ -5,12 +5,31 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-  workflow_dispatch: # allow manual runs from the Actions tab
+  schedule:
+    # Nightly, 04:00 Philippine time: the full suite on Chromium, Firefox and WebKit. The apps under
+    # test are live public sites, so this also catches them changing while the code doesn't.
+    - cron: '0 20 * * *'
+  workflow_dispatch: # manual runs from the Actions tab
+    inputs:
+      cross_browser:
+        description: 'Run the UI suite on Firefox and WebKit too'
+        type: boolean
+        default: false
+
+# Every job only reads the repo.
+permissions:
+  contents: read
+
+# A new push to the same branch or PR cancels the run it supersedes. Scheduled runs never cancel.
+concurrency:
+  group: ci-${{ github.event_name == 'schedule' && github.run_id || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   sanity-check:
     name: Repository sanity check
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -32,11 +51,19 @@ jobs:
           done
 
   ui-tests:
-    name: Playwright UI tests (SauceDemo + The Internet)
+    name: Playwright UI tests (${{ matrix.browser }})
     runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false # one engine failing shouldn't hide the others' results
+      matrix:
+        # Chromium on every push and PR; all three engines nightly or on request.
+        browser: ${{ fromJSON((github.event_name == 'schedule' || inputs.cross_browser) && '["chromium","firefox","webkit"]' || '["chromium"]') }}
     defaults:
       run:
         working-directory: 04-automation/ui
+    env:
+      BROWSER: ${{ matrix.browser }}
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -48,18 +75,22 @@ jobs:
       - run: npm run lint
       - run: npm run format:check
       - run: npm run typecheck
-      - run: npx playwright install --with-deps chromium
+      - run: npx playwright install --with-deps ${{ matrix.browser }}
       - run: npx playwright test
+      - name: Job summary
+        if: ${{ !cancelled() }}
+        run: node ../../09-ci-cd/summary/playwright-summary.mjs results.json "UI tests (${{ matrix.browser }})" >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
-          name: playwright-report
+          name: playwright-report-${{ matrix.browser }}
           path: 04-automation/ui/playwright-report/
           retention-days: 14
 
   api-tests:
     name: Playwright API tests (Restful-Booker)
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     defaults:
       run:
         working-directory: 04-automation/api
@@ -74,7 +105,10 @@ jobs:
       - run: npm run lint
       - run: npm run format:check
       - run: npm run typecheck
-      - run: npx playwright test  # request API only — no browser install needed
+      - run: npx playwright test # request API only, no browser install needed
+      - name: Job summary
+        if: ${{ !cancelled() }}
+        run: node ../../09-ci-cd/summary/playwright-summary.mjs results.json "API tests" >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
@@ -85,6 +119,7 @@ jobs:
   traceability:
     name: Traceability gate (manual cases <-> automated tests)
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -102,6 +137,7 @@ jobs:
   ai-evals:
     name: AI eval harness (mock model)
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     defaults:
       run:
         working-directory: 08-ai-testing
@@ -110,11 +146,12 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: 22
-      - run: node eval/run-evals.mjs  # no dependencies; exits non-zero on any eval failure
+      - run: node eval/run-evals.mjs # no dependencies; exits non-zero on any eval failure
 
   sql-checks:
     name: SQL data-validation checks (SQLite)
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v7
       - run: command -v sqlite3 || (sudo apt-get update && sudo apt-get install -y sqlite3)
@@ -123,6 +160,7 @@ jobs:
   k6-scripts:
     name: k6 scripts compile (no load generated)
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     defaults:
       run:
         working-directory: 06-performance-testing
@@ -130,3 +168,25 @@ jobs:
       - uses: actions/checkout@v7
       - uses: grafana/setup-k6-action@v1
       - run: for s in scripts/*.js; do k6 inspect "$s" > /dev/null; echo "OK $s"; done
+
+  # One table with every gate's result, and one check that is green only if all of them are.
+  all-gates:
+    name: All gates
+    if: ${{ !cancelled() }}
+    needs: [sanity-check, ui-tests, api-tests, traceability, ai-evals, sql-checks, k6-scripts]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Summarise gate results
+        env:
+          NEEDS: ${{ toJSON(needs) }}
+        run: |
+          node -e '
+            const needs = JSON.parse(process.env.NEEDS);
+            const rows = Object.entries(needs).map(([job, { result }]) =>
+              `| ${job} | ${result === "success" ? "PASS" : result.toUpperCase()} |`);
+            const ok = Object.values(needs).every((n) => n.result === "success");
+            console.log([`### All gates: ${ok ? "PASS" : "FAIL"}`, "", "| Job | Result |", "| --- | --- |", ...rows, ""].join("\n"));
+            process.exitCode = ok ? 0 : 1;
+          ' | tee -a "$GITHUB_STEP_SUMMARY"
+          exit "${PIPESTATUS[0]}"

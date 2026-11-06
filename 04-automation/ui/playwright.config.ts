@@ -1,5 +1,18 @@
 import { defineConfig, devices } from '@playwright/test';
 
+// Browser engine for every project: chromium (default, every push and PR), firefox or webkit
+// (nightly in CI, or locally: BROWSER=webkit npx playwright test).
+const ENGINES = {
+  chromium: devices['Desktop Chrome'],
+  firefox: devices['Desktop Firefox'],
+  webkit: devices['Desktop Safari'],
+} as const;
+const engine = (process.env.BROWSER ?? 'chromium') as keyof typeof ENGINES;
+if (!(engine in ENGINES)) {
+  throw new Error(`BROWSER must be one of ${Object.keys(ENGINES).join(', ')}, got "${engine}"`);
+}
+const device = ENGINES[engine];
+
 /**
  * Playwright configuration for the UI automation suites.
  * Organized by application via Playwright "projects", each with its own baseURL:
@@ -22,7 +35,10 @@ export default defineConfig({
   // Retries still run, so the trace of the failed attempt is kept.
   failOnFlakyTests: !!process.env.CI,
   workers: process.env.CI ? 1 : undefined,
-  reporter: [['list'], ['html', { open: 'never' }]],
+  // CI also writes JSON, which 09-ci-cd/summary turns into the job summary table.
+  reporter: process.env.CI
+    ? [['list'], ['html', { open: 'never' }], ['json', { outputFile: 'results.json' }]]
+    : [['list'], ['html', { open: 'never' }]],
 
   use: {
     trace: 'on-first-retry',
@@ -34,19 +50,18 @@ export default defineConfig({
     {
       name: 'saucedemo-setup',
       testMatch: /saucedemo\.setup\.ts/,
-      use: { ...devices['Desktop Chrome'], baseURL: 'https://www.saucedemo.com' },
+      use: { ...device, baseURL: 'https://www.saucedemo.com' },
     },
     {
       name: 'saucedemo',
       testIgnore: ['**/the-internet/**', '**/*.setup.ts'],
       dependencies: ['saucedemo-setup'],
-      use: { ...devices['Desktop Chrome'], baseURL: 'https://www.saucedemo.com' },
+      use: { ...device, baseURL: 'https://www.saucedemo.com' },
     },
     {
       name: 'the-internet',
       testDir: './tests/the-internet',
-      use: { ...devices['Desktop Chrome'], baseURL: 'https://the-internet.herokuapp.com' },
+      use: { ...device, baseURL: 'https://the-internet.herokuapp.com' },
     },
-    // Add more browsers per project when needed, e.g. devices['Desktop Firefox'].
   ],
 });
