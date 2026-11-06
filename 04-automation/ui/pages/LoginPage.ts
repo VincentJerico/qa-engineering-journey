@@ -13,7 +13,7 @@ export class LoginPage {
     this.username = page.locator('#user-name');
     this.password = page.locator('#password');
     this.loginButton = page.locator('#login-button');
-    this.error = page.locator('[data-test="error"]');
+    this.error = page.getByTestId('error');
   }
 
   async goto() {

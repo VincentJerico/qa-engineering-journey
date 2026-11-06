@@ -5,6 +5,9 @@
   "type": "module",
   "scripts": {
     "test": "playwright test",
+    "test:high": "playwright test --grep @high",
+    "test:medium": "playwright test --grep @medium",
+    "test:low": "playwright test --grep @low",
     "report": "playwright show-report",
     "lint": "eslint . --max-warnings 0",
     "format": "prettier --write .",

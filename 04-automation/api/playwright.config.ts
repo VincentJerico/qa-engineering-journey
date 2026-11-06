@@ -10,6 +10,8 @@ export default defineConfig({
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
+  // A test that only passes on retry fails the run in CI: flakiness is a defect to fix, not hide.
+  failOnFlakyTests: !!process.env.CI,
   reporter: [['list'], ['html', { open: 'never' }]],
 
   use: {

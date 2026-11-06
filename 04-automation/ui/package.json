@@ -5,6 +5,9 @@
   "type": "module",
   "scripts": {
     "test": "playwright test",
+    "test:high": "playwright test --grep @high",
+    "test:medium": "playwright test --grep @medium",
+    "test:low": "playwright test --grep @low",
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",
     "report": "playwright show-report",

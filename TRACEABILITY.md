@@ -26,6 +26,15 @@ case that doesn't exist, or a case loses its test. See [09-ci-cd/traceability](0
 | [SC-03-negative-and-status-codes.md](03-api-testing/test-scenarios/SC-03-negative-and-status-codes.md) | 6 | 6 | 0 |
 | **Total** | **108** | **108** | **0** |
 
+Each test is tagged with its case priority, so a risk-based subset is one command:
+`npx playwright test --grep @high`.
+
+| Priority | Tag | Cases |
+| --- | --- | --: |
+| High | `@high` | 59 |
+| Medium | `@medium` | 37 |
+| Low | `@low` | 12 |
+
 ## TC-CART-saucedemo
 
 | Case | Title | Priority | Automated by |

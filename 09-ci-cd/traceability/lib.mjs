@@ -1,6 +1,8 @@
 // Requirements traceability: manual test cases (the "requirements" of this repo) against the
 // automated tests that cover them. Pure functions only; trace.mjs does the file and process work.
 
+export const PRIORITY_TAGS = ['@high', '@medium', '@low'];
+
 export const CASE_ID = /(?:TC|SC)-[A-Z0-9]+(?:-[A-Z0-9]+)*-\d{3}/;
 
 /**
@@ -30,12 +32,14 @@ export function githubAnchor(heading) {
 
 /**
  * Tests from `playwright test --list --reporter=json`. `suite` names the suite ("UI", "API") and
- * `dir` is the suite folder relative to the repo root, used to build links.
+ * `dir` is the suite folder relative to the repo root, used to build links. Setup steps
+ * (`*.setup.ts`, e.g. saving a login session) are fixtures, not test cases, so they're skipped.
  */
 export function collectTests(listJson, { suite, dir }) {
   const tests = [];
   const walk = (node) => {
     for (const spec of node.specs ?? []) {
+      if (/\.setup\.[cm]?[jt]s$/.test(spec.file)) continue;
       for (const t of spec.tests) {
         tests.push({
           title: spec.title,
@@ -43,6 +47,7 @@ export function collectTests(listJson, { suite, dir }) {
           file: `${dir}/tests/${spec.file}`,
           project: t.projectName || suite,
           suite,
+          tags: (spec.tags ?? []).map((tag) => `@${tag.replace(/^@/, '')}`), // the JSON reporter drops the @
         });
       }
     }
@@ -59,6 +64,7 @@ export function collectTests(listJson, { suite, dir }) {
  *  3. Every case is automated, unless manualOnly lists it with a reason.
  *  4. Case IDs are unique across the manual docs.
  *  5. manualOnly only lists cases that exist and really have no test.
+ *  6. Every test carries exactly one priority tag, and it matches its case (`@high` for High).
  */
 export function check({ cases, tests, manualOnly = {} }) {
   const problems = [];
@@ -70,6 +76,14 @@ export function check({ cases, tests, manualOnly = {} }) {
   for (const t of tests) {
     if (!t.id) problems.push(`untraced test: "${t.title}" (${t.file}) does not start with a case ID`);
     else if (!byId.has(t.id)) problems.push(`unknown case: "${t.title}" (${t.file}) uses ${t.id}, which no manual doc defines`);
+    else {
+      const want = byId.get(t.id).priority ? `@${byId.get(t.id).priority.toLowerCase()}` : undefined;
+      const have = (t.tags ?? []).filter((tag) => PRIORITY_TAGS.includes(tag));
+      if (!want) problems.push(`no priority: ${t.id} (${byId.get(t.id).doc}) has no **Priority:** line to tag from`);
+      else if (have.length !== 1 || have[0] !== want) {
+        problems.push(`priority tag mismatch: "${t.title}" (${t.file}) has [${have.join(', ')}], its case says ${want}`);
+      }
+    }
   }
   const testsById = Map.groupBy(tests.filter((t) => t.id), (t) => t.id);
   for (const [id, reason] of Object.entries(manualOnly)) {
@@ -110,6 +124,18 @@ export function render(rows) {
     out.push(`| [${doc.split('/').pop()}](${doc}) | ${list.length} | ${auto} | ${list.length - auto} |`);
   }
   out.push(`| **Total** | **${rows.length}** | **${automated}** | **${rows.length - automated}** |`, '');
+  const byPriority = Map.groupBy(rows, (r) => r.priority ?? 'None');
+  out.push(
+    'Each test is tagged with its case priority, so a risk-based subset is one command:',
+    '`npx playwright test --grep @high`.',
+    '',
+    '| Priority | Tag | Cases |',
+    '| --- | --- | --: |',
+    ...['High', 'Medium', 'Low']
+      .filter((p) => byPriority.has(p))
+      .map((p) => `| ${p} | \`@${p.toLowerCase()}\` | ${byPriority.get(p).length} |`),
+    '',
+  );
   for (const [doc, list] of docs) {
     out.push(`## ${doc.split('/').pop().replace(/\.md$/, '')}`, '', '| Case | Title | Priority | Automated by |', '| --- | --- | --- | --- |');
     for (const r of list) {

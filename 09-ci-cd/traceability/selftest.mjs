@@ -12,14 +12,21 @@ const cases = parseCases(
     '### TC-DEMO-002 — Locked user is refused',
     '**Priority:** Medium',
     '### SC-API-DEMO-001 — Health check',
+    '**Priority:** Low',
+    '### TC-DEMO-003 — No priority line',
   ].join('\n'),
   doc,
 );
-const listJson = (titles) => ({
-  suites: [{ file: 'demo.spec.ts', specs: titles.map((title) => ({ title, file: 'demo.spec.ts', tests: [{ projectName: 'demo' }] })) }],
-});
-const tests = (titles) => collectTests(listJson(titles), { suite: 'UI', dir: 'suite' });
-const clean = ['TC-DEMO-001: logs in', 'TC-DEMO-002: refuses a locked user', 'SC-API-DEMO-001: health check'];
+// A title may carry tags after it: 'TC-DEMO-001: logs in @high'. Like Playwright's JSON reporter,
+// the fixture lists them without the @ ("high"), so the self-test covers that format too.
+const spec = (entry, file = 'demo.spec.ts') => {
+  const [title, ...tags] = entry.split(' @');
+  return { title, file, tags, tests: [{ projectName: 'demo' }] };
+};
+const listJson = (entries, extra = []) => ({ suites: [{ file: 'demo.spec.ts', specs: [...entries.map((e) => spec(e)), ...extra] }] });
+const tests = (entries, extra) => collectTests(listJson(entries, extra), { suite: 'UI', dir: 'suite' });
+const clean = ['TC-DEMO-001: logs in @high', 'TC-DEMO-002: refuses a locked user @medium', 'SC-API-DEMO-001: health check @low'];
+const manualOnly = { 'TC-DEMO-003': 'fixture case without a priority, never automated' };
 
 const results = [];
 const expect = (name, fn) => {
@@ -30,7 +37,7 @@ const expect = (name, fn) => {
     results.push(`FAIL ${name}\n     ${err.message.split('\n')[0]}`);
   }
 };
-const problemsFor = (input) => check({ cases, ...input }).problems;
+const problemsFor = (input) => check({ cases, manualOnly, ...input }).problems;
 const reports = (problems, pattern) =>
   assert.ok(problems.some((p) => pattern.test(p)), `expected a problem matching ${pattern}, got: ${JSON.stringify(problems)}`);
 
@@ -40,7 +47,8 @@ expect('parses ID, title and priority', () => {
     [
       ['TC-DEMO-001', 'Log in with valid credentials', 'High'],
       ['TC-DEMO-002', 'Locked user is refused', 'Medium'],
-      ['SC-API-DEMO-001', 'Health check', undefined],
+      ['SC-API-DEMO-001', 'Health check', 'Low'],
+      ['TC-DEMO-003', 'No priority line', undefined],
     ],
   );
 });
@@ -55,7 +63,7 @@ expect('catches a test pointing at an unknown case', () =>
 expect('catches a case that lost its test', () =>
   reports(problemsFor({ tests: tests(clean.slice(1)) }), /^not automated: TC-DEMO-001/));
 expect('accepts a listed manual-only case', () =>
-  assert.deepEqual(problemsFor({ tests: tests(clean.slice(1)), manualOnly: { 'TC-DEMO-001': 'needs a human eye' } }), []));
+  assert.deepEqual(problemsFor({ tests: tests(clean.slice(1)), manualOnly: { ...manualOnly, 'TC-DEMO-001': 'needs a human eye' } }), []));
 expect('catches a manual-only entry without a reason', () =>
   reports(problemsFor({ tests: tests(clean.slice(1)), manualOnly: { 'TC-DEMO-001': ' ' } }), /without a reason/));
 expect('catches a manual-only entry that is automated', () =>
@@ -63,7 +71,19 @@ expect('catches a manual-only entry that is automated', () =>
 expect('catches a manual-only entry for an unknown case', () =>
   reports(problemsFor({ tests: tests(clean), manualOnly: { 'TC-DEMO-404': 'x' } }), /manual-only lists TC-DEMO-404, which no manual doc/));
 expect('catches a duplicate case ID', () =>
-  reports(check({ cases: [...cases, { ...cases[0], doc: 'cases/OTHER.md' }], tests: tests(clean) }).problems, /^duplicate case ID TC-DEMO-001/));
+  reports(check({ cases: [...cases, { ...cases[0], doc: 'cases/OTHER.md' }], tests: tests(clean), manualOnly }).problems, /^duplicate case ID TC-DEMO-001/));
+expect('catches a test with no priority tag', () =>
+  reports(problemsFor({ tests: tests(['TC-DEMO-001: logs in', ...clean.slice(1)]) }), /^priority tag mismatch: "TC-DEMO-001: logs in" .* has \[\], its case says @high/));
+expect('catches a priority tag that disagrees with the case', () =>
+  reports(problemsFor({ tests: tests(['TC-DEMO-001: logs in @low', ...clean.slice(1)]) }), /^priority tag mismatch: .* has \[@low\], its case says @high/));
+expect('catches two priority tags on one test', () =>
+  reports(problemsFor({ tests: tests(['TC-DEMO-001: logs in @high @low', ...clean.slice(1)]) }), /has \[@high, @low\]/));
+expect('ignores non-priority tags', () =>
+  assert.deepEqual(problemsFor({ tests: tests(['TC-DEMO-001: logs in @high @bug', ...clean.slice(1)]) }), []));
+expect('catches a tested case with no priority line', () =>
+  reports(check({ cases, tests: tests([...clean, 'TC-DEMO-003: no priority @low']) }).problems, /^no priority: TC-DEMO-003/));
+expect('skips setup steps', () =>
+  assert.deepEqual(problemsFor({ tests: tests(clean, [spec('log in once', 'auth.setup.ts')]) }), []));
 
 console.log(results.join('\n'));
 const failed = results.filter((r) => r.startsWith('FAIL')).length;

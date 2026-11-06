@@ -19,19 +19,19 @@ export class CheckoutPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.firstName = page.locator('[data-test="firstName"]');
-    this.lastName = page.locator('[data-test="lastName"]');
-    this.postalCode = page.locator('[data-test="postalCode"]');
-    this.continueButton = page.locator('[data-test="continue"]');
-    this.cancelButton = page.locator('[data-test="cancel"]');
-    this.finishButton = page.locator('[data-test="finish"]');
-    this.error = page.locator('[data-test="error"]');
+    this.firstName = page.getByTestId('firstName');
+    this.lastName = page.getByTestId('lastName');
+    this.postalCode = page.getByTestId('postalCode');
+    this.continueButton = page.getByTestId('continue');
+    this.cancelButton = page.getByTestId('cancel');
+    this.finishButton = page.getByTestId('finish');
+    this.error = page.getByTestId('error');
     this.itemNames = page.locator('.cart_item .inventory_item_name');
     this.itemTotal = page.locator('.summary_subtotal_label');
     this.tax = page.locator('.summary_tax_label');
     this.total = page.locator('.summary_total_label');
     this.completeHeader = page.locator('.complete-header');
-    this.backHomeButton = page.locator('[data-test="back-to-products"]');
+    this.backHomeButton = page.getByTestId('back-to-products');
   }
 
   async fillInformation(first: string, last: string, zip: string) {

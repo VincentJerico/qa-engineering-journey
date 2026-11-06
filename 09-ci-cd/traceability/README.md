@@ -13,13 +13,16 @@ that true. It reads the manual case documents and the test list Playwright repor
 | Every manual case has a test, unless [`manual-only.json`](manual-only.json) lists it with a reason | a case loses its test |
 | Case IDs are unique across the manual documents | two cases share an ID |
 | `manual-only.json` lists only real, unautomated cases, each with a reason | an entry is stale or has no reason |
+| Every test carries exactly one priority tag, matching its case's `**Priority:**` (`@high` for High) | a tag is missing, wrong, or doubled |
 | `TRACEABILITY.md` matches what the generator produces | the committed matrix is stale |
 
 Cases come from `### <ID> — <title>` headings in
 [`01-manual-testing/test-cases`](../../01-manual-testing/test-cases/) and
 [`03-api-testing/test-scenarios`](../../03-api-testing/test-scenarios/) (execution reports are
 skipped). Tests come from `npx playwright test --list --reporter=json` in each suite, so the gate sees
-the same tests Playwright runs, including titles that span lines in the source.
+the same tests Playwright runs, including titles that span lines in the source, and their tags.
+Setup steps (`*.setup.ts`, such as saving a login session) are fixtures, not cases, so the gate skips
+them.
 
 ## Run it
 

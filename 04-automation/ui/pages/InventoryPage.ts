@@ -26,17 +26,22 @@ export class InventoryPage {
     this.logoutLink = page.locator('#logout_sidebar_link');
   }
 
+  /** Opens the catalog directly; needs a logged-in session (see STANDARD_USER_STATE). */
+  async goto() {
+    await this.page.goto('/inventory.html');
+  }
+
   async expectLoaded() {
     await expect(this.page).toHaveURL(/inventory\.html/);
     await expect(this.title).toHaveText('Products');
   }
 
   addToCart(productId: string) {
-    return this.page.locator(`[data-test="add-to-cart-${productId}"]`).click();
+    return this.page.getByTestId(`add-to-cart-${productId}`).click();
   }
 
   removeFromCart(productId: string) {
-    return this.page.locator(`[data-test="remove-${productId}"]`).click();
+    return this.page.getByTestId(`remove-${productId}`).click();
   }
 
   async sortBy(value: 'az' | 'za' | 'lohi' | 'hilo') {
